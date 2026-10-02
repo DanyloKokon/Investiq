@@ -1,14 +1,24 @@
 import { createAsyncThunk, createSlice, combineReducers } from "@reduxjs/toolkit";
-import { fetchItems } from '../components/data'
+import { fetchItems, postUser as addUser, getUser as findUser } from '../components/data'
+import { saveUserToStorage, getUserFromStorage, clearUserFromStorage } from "../utils/localStorage";
 
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
   return await fetchItems()
 })
+export const postUser = createAsyncThunk("users/postUser", async (newUser) => {
+  return await addUser(newUser)
+})
+export const getUser = createAsyncThunk("users/getUser", async (user) => {
+  return await findUser(user)
+})
+
+const storedUser = getUserFromStorage();
 
 const accountSlice = createSlice({
   name: "account",
   initialState: {
-    user: [],
+    user: storedUser ? (Array.isArray(storedUser) ? storedUser : [storedUser]) : [],
+    isLogined: storedUser ? true : false,
     status: "idle",
     error: null,
   },
@@ -17,21 +27,22 @@ const accountSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchUsers.pending, (state) => {
+      .addCase(getUser.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
-      .addCase(fetchUsers.fulfilled, (state, action) => {
+      .addCase(getUser.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.user = action.payload.map((item) => ({
-          ...item,
-          id: Number(item.user_id),
-        }));
+        const user = action.payload[0];
+        if (user) state.user.push(user);
+        saveUserToStorage(user)
+        state.isLogined = true
       })
-      .addCase(fetchUsers.rejected, (state, action) => {
+      .addCase(getUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message || "Failed to fetch users";
-      });
+      })
+
   }
 })
 

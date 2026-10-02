@@ -20,11 +20,11 @@ con.connect().then(() => console.log("connected"))
 
 
 // POST function
-app.post('/api', (req, res) => {
+app.post('/addUser', (req, res) => {
 
-  const { username, user_id } = req.body
-  const insert_query = 'INSERT INTO users (username, user_id) VALUES ($1, $2)'
-  con.query(insert_query, [username, user_id], (err, result) => {
+  const { username, password, email, user_id } = req.body
+  const insert_query = 'INSERT INTO users (username, password, email, user_id) VALUES ($1, $2, $3, $4)'
+  con.query(insert_query, [username, password, email, user_id], (err, result) => {
 
     if (!err) {
       console.log(result);
@@ -38,17 +38,17 @@ app.post('/api', (req, res) => {
 })
 
 //POST LIST function
-app.post('/postList', async (req, res)=>{
-  const data = req.body
-  try{
-    for(const i of data){
-      const {name, id} = i
-      await con.query('INSERT INTO users (username, user_id) VALUES ($1, $2)', [name, id])
-    }
-    res.send("POSTED")
-  }catch(err){
-    res.send(err)
-  }})
+// app.post('/postList', async (req, res)=>{
+//   const data = req.body
+//   try{
+//     for(const i of data){
+//       const {name, id} = i
+//       await con.query('INSERT INTO users (username, user_id) VALUES ($1, $2)', [name, id])
+//     }
+//     res.send("POSTED")
+//   }catch(err){
+//     res.send(err)
+//   }})
 
 // FETCH ALL function
 app.get('/', (req, res) => {
@@ -66,10 +66,23 @@ app.get('/', (req, res) => {
 })
 
 // FETCH BY ID function
-app.get('/id/:id', (req, res) => {
-  const id = req.params.id
-  const fetch_query = "SELECT * FROM public.users where user_id = $1"
-  con.query(fetch_query, [id], (err, result) => {
+// app.get('/id/:id', (req, res) => {
+//   const id = req.params.id
+//   const fetch_query = "SELECT * FROM public.users where user_id = $1"
+//   con.query(fetch_query, [id], (err, result) => {
+//     if (err) {
+//       res.send(err)
+//     } else (
+//       res.send(result.rows)
+//     )
+//   })
+// })
+
+// FETCH BY ID function
+app.post('/id', (req, res) => {
+  const {password, email} = req.body
+  const fetch_query = "SELECT * FROM public.users where (password, email) = ($1, $2)"
+  con.query(fetch_query, [password, email], (err, result) => {
     if (err) {
       res.send(err)
     } else (
@@ -94,13 +107,13 @@ app.put('/put/:id', (req, res) => {
 })
 
 //DELETE function
-app.delete('/delete/:id', (req, res)=>{
+app.delete('/delete/:id', (req, res) => {
   const id = req.params.id;
 
   const query = "DELETE FROM public.users WHERE user_id = $1"
 
-  con.query(query, [id], (err, result)=>{
-     if (err) {
+  con.query(query, [id], (err, result) => {
+    if (err) {
       res.send(err)
     } else (
       res.send("DELETED")
