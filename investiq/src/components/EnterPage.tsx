@@ -23,7 +23,7 @@ function Enter() {
 
         e.preventDefault()
         if (choise === 2) {
-            dispatch(postUser({ username: 'User', password: password, email: email, user_id: String(id) }));
+            dispatch(postUser({ username: 'User', password: password, email: email }));
             setEmail('')
             setPass('')
             console.log(String(id));
@@ -32,7 +32,7 @@ function Enter() {
             setEmail('')
             setPass('')
             console.log(1);
-            navigate('/home')
+            navigate('/investiq/home')
         }
     }
 

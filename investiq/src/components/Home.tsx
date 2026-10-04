@@ -1,11 +1,18 @@
 import { useState } from "react";
+import Table from "./aditionalComp/Table";
+import { useDispatch, useSelector } from "react-redux";
+import { postRow } from "../redux/reducer";
+import { getUserFromStorage } from "../utils/localStorage";
 function Home() {
 
+    // const { user } = useSelector((state) => state.users)
+    const storedUser = getUserFromStorage();
     const [item, setItem] = useState<string>('')
+    const [date, setDate] = useState<string>('')
     const [choise, setChoise] = useState<string>('')
-    const [sum, setSum] = useState<number | null>(null)
+    const [sum, setSum] = useState<number>(0)
     const [varr, setVar] = useState<number>(0)
-
+    const dispatch = useDispatch()
     const options = [
         {
             value: '',
@@ -57,8 +64,12 @@ function Home() {
         }
     ]
 
-    function handelSubmit(e) {
+    function handelSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
+        if (varr === 1) {
+            dispatch(postRow({ date: date, description: item, categorie: choise, sum: sum, user_id: storedUser.id }))
+            console.log("post");
+        }
     }
 
     return (<section className="home-sect">
@@ -70,9 +81,9 @@ function Home() {
             </div>
             <div className="home-main">
                 <form onSubmit={handelSubmit} className="home-form" >
-                    <label className="home-date">10.04.2026</label>
+                    <input value={date} onChange={(e) => setDate(e.target.value)} type="date" name="date" />
                     <div className="home-input-wrap">
-                        <input placeholder="Опис товару" value={item} onChange={(e) => setItem(e.target.value)} className="home-it" type="text" />
+                        <input name="description" placeholder="Опис товару" value={item} onChange={(e) => setItem(e.target.value)} className="home-it" type="text" />
                         <select onChange={(e) => setChoise(e.target.value)} className="home-select" name="Категорія товару" id="">
                             {options.map((opt) => (
                                 <option value={opt.value}>
@@ -80,13 +91,13 @@ function Home() {
                                 </option>
                             ))}
                         </select>
-                        <input value={sum} onChange={(e) => setSum(e.target.value)} placeholder='0.00' className="home-summ" type="number" />
+                        <input name="sum" onChange={(e) => setSum(e.target.value)} value={sum}  className="home-summ" type="number" />
                     </div>
-                    <button onClick={() => setVar(1)} className="oath-btn oath-btn-or">Ввести</button>
+                    <button style={{ "marginLeft": "27px" }} onClick={() => setVar(1)} className="oath-btn oath-btn-or">Ввести</button>
                     <button onClick={() => setVar(2)} className="home-btn-cl">Очистити</button>
                 </form>
                 <div>
-                    <table></table>
+                    <Table />
                     <table></table>
                 </div>
             </div>

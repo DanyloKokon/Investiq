@@ -167,6 +167,7 @@
   border-radius: 0px 16px 16px 0px;
   background-color: var(--backW);
   color: var(--back-text);
+  
 }
 
 .home-it {
@@ -182,6 +183,7 @@
 .home-form {
   display: flex;
   align-items: center;
+  padding-top: 33px;
 }
 
 .home-btn-cl {
@@ -205,4 +207,5 @@
   font-size: 12px;
   font-weight: 900;
   letter-spacing: 4%;
+  margin-left: 50px;
 }

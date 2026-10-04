@@ -23,8 +23,25 @@ con.connect().then(() => console.log("connected"))
 app.post('/addUser', (req, res) => {
 
   const { username, password, email, user_id } = req.body
-  const insert_query = 'INSERT INTO users (username, password, email, user_id) VALUES ($1, $2, $3, $4)'
-  con.query(insert_query, [username, password, email, user_id], (err, result) => {
+  const insert_query = 'INSERT INTO users (username, password, email) VALUES ($1, $2, $3)'
+  con.query(insert_query, [username, password, email], (err, result) => {
+
+    if (!err) {
+      console.log(result);
+      res.send("POSTED DATA")
+    } else {
+      res.send(err)
+    }
+
+  })
+
+})
+
+app.post('/postRow', (req, res) => {
+
+  const { date, description, categorie, sum, user_id } = req.body
+  const insert_query = 'INSERT INTO data (description, categorie, sum, user_id, date) VALUES ($1, $2, $3, $4, $5)'
+  con.query(insert_query, [description, categorie, sum, user_id, date], (err, result) => {
 
     if (!err) {
       console.log(result);
@@ -51,9 +68,9 @@ app.post('/addUser', (req, res) => {
 //   }})
 
 // FETCH ALL function
-app.get('/', (req, res) => {
+app.get('/data', (req, res) => {
 
-  const query = "SELECT * FROM public.users"
+  const query = "SELECT * FROM public.data"
   con.query(query, (err, result) => {
     if (!err) {
       console.log(result.rows);
@@ -80,7 +97,7 @@ app.get('/', (req, res) => {
 
 // FETCH BY ID function
 app.post('/id', (req, res) => {
-  const {password, email} = req.body
+  const { password, email } = req.body
   const fetch_query = "SELECT * FROM public.users where (password, email) = ($1, $2)"
   con.query(fetch_query, [password, email], (err, result) => {
     if (err) {
