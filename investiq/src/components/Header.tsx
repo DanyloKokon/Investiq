@@ -1,9 +1,11 @@
 function Header() {
-    return ( <header style={{"width":"99.99vw"}}>
-        <div className="logo">
-            <p>Investiq</p>
-        </div>
-    </header> );
+    return (
+        <header className="app-header">
+            <div className="logo">
+                <p>Investiq</p>
+            </div>
+        </header>
+    );
 }
 
 export default Header;
