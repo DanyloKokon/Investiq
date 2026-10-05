@@ -204,8 +204,72 @@
 .home-date {
   width: 74px;
   height: 40px;
-  font-size: 12px;
+  font-size: 9px;
   font-weight: 900;
   letter-spacing: 4%;
   margin-left: 50px;
+  background-color: var(--backW);
+  color: #000000;
+  border: var(--border-color);
+}
+
+.home-spends{
+  width: 138px;
+  height: 40px;
+  border: none;
+  border-radius: 16px 16px 0px 0px;
+  font-weight: 700;
+  font-size: 12px;
+  color: #000000;
+  background-color: #FAFBFD;
+}
+
+.home-spends.active {
+  background-color: var(--backW);
+  color: var(--btnOr);
+}
+
+.home-btns{
+  text-align: left;
+}
+
+/* ======================================= Table ========================= */
+.table-head{
+  width: 760px;
+  height: 40px;
+  background-color: #F5F6FB;
+}
+
+.table-head th{
+  height: 40px;
+  background-color: #F5F6FB;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.table-head th:first-child{
+  border-top-left-radius: 16px;
+}
+
+.table-head th:last-child{
+  border-top-right-radius: 16px;
+}
+
+.table{
+  width: 760px;
+ 
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-left: 20px;
+  margin-top: 59px;
+}
+
+.table-tr{
+  height: 40px;
+  width: 760px;
+}
+
+.table-tr td{
+   border-right: 1px solid var(--border-color);
+  border-left: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
 }

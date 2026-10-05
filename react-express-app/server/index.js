@@ -68,10 +68,10 @@ app.post('/postRow', (req, res) => {
 //   }})
 
 // FETCH ALL function
-app.get('/data', (req, res) => {
-
-  const query = "SELECT * FROM public.data"
-  con.query(query, (err, result) => {
+app.post('/data', (req, res) => {
+  const {user_id} = req.body
+  const query = "SELECT * FROM public.data where (user_id) = ($1)"
+  con.query(query,[user_id], (err, result) => {
     if (!err) {
       console.log(result.rows);
       res.send(result.rows)
@@ -124,17 +124,19 @@ app.put('/put/:id', (req, res) => {
 })
 
 //DELETE function
-app.delete('/delete/:id', (req, res) => {
+app.delete('/delete/:id/:row', (req, res) => {
   const id = req.params.id;
+  const row_id = req.params.row
+  const query = "DELETE FROM public.data WHERE user_id = $1 AND row_id = $2"
 
-  const query = "DELETE FROM public.users WHERE user_id = $1"
-
-  con.query(query, [id], (err, result) => {
+  con.query(query, [id, row_id], (err, result) => {
     if (err) {
-      res.send(err)
-    } else (
-      res.send("DELETED")
-    )
+      return res.status(500).json({ error: err.message });
+    }
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Row not found" });
+    }
+    return res.sendStatus(204);
   })
 })
 

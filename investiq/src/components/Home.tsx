@@ -12,6 +12,7 @@ function Home() {
     const [choise, setChoise] = useState<string>('')
     const [sum, setSum] = useState<number>(0)
     const [varr, setVar] = useState<number>(0)
+    const [activeTab, setActiveTab] = useState<'spends' | 'income'>('spends')
     const dispatch = useDispatch()
     const options = [
         {
@@ -69,6 +70,15 @@ function Home() {
         if (varr === 1) {
             dispatch(postRow({ date: date, description: item, categorie: choise, sum: sum, user_id: storedUser.id }))
             console.log("post");
+            setSum(0)
+            setDate('')
+            setChoise('')
+            setItem('')
+        } else if (varr === 2) {
+            setSum(0)
+            setDate('')
+            setChoise('')
+            setItem('')
         }
     }
 
@@ -76,12 +86,22 @@ function Home() {
         <div></div>
         <div className="home-wrap">
             <div className="home-btns">
-                <button>Витрати</button>
-                <button>Дохід</button>
+                <button
+                    className={`home-spends ${activeTab === 'spends' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('spends')}
+                >
+                    Витрати
+                </button>
+                <button
+                    className={`home-spends ${activeTab === 'income' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('income')}
+                >
+                    Дохід
+                </button>
             </div>
             <div className="home-main">
                 <form onSubmit={handelSubmit} className="home-form" >
-                    <input value={date} onChange={(e) => setDate(e.target.value)} type="date" name="date" />
+                    <input value={date} onChange={(e) => setDate(e.target.value)} type="date" className="home-date" name="date" />
                     <div className="home-input-wrap">
                         <input name="description" placeholder="Опис товару" value={item} onChange={(e) => setItem(e.target.value)} className="home-it" type="text" />
                         <select onChange={(e) => setChoise(e.target.value)} className="home-select" name="Категорія товару" id="">
@@ -91,7 +111,7 @@ function Home() {
                                 </option>
                             ))}
                         </select>
-                        <input name="sum" onChange={(e) => setSum(e.target.value)} value={sum}  className="home-summ" type="number" />
+                        <input name="sum" onChange={(e) => setSum(e.target.value)} value={sum} className="home-summ" type="number" />
                     </div>
                     <button style={{ "marginLeft": "27px" }} onClick={() => setVar(1)} className="oath-btn oath-btn-or">Ввести</button>
                     <button onClick={() => setVar(2)} className="home-btn-cl">Очистити</button>

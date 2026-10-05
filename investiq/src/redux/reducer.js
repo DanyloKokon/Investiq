@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice, combineReducers } from "@reduxjs/toolkit";
-import { fetchData, postUser as addUser, getUser as findUser, postRow as addRow } from '../components/data'
+import { fetchData, postUser as addUser, getUser as findUser, postRow as addRow, deleteRow as deleteInfo } from '../components/data'
 import { saveUserToStorage, getUserFromStorage, clearUserFromStorage } from "../utils/localStorage";
 
-export const getData = createAsyncThunk("users/fetchUsers", async () => {
-  return await fetchData()
+/** @type {import("@reduxjs/toolkit").AsyncThunk<any, { user_id: string | number }, import("@reduxjs/toolkit").AsyncThunkConfig>} */
+export const getData = createAsyncThunk("users/fetchUsers", async (user_id) => {
+  return await fetchData(user_id)
 })
 export const postUser = createAsyncThunk("users/postUser", async (newUser) => {
   return await addUser(newUser)
@@ -14,6 +15,11 @@ export const postRow = createAsyncThunk("rows/postRow", async (row) => {
 })
 export const getUser = createAsyncThunk("users/getUser", async (user) => {
   return await findUser(user)
+})
+/** @type {import("@reduxjs/toolkit").AsyncThunk<{ user_id: string | number, row_id: string | number }, { user_id: string | number, row_id: string | number }, import("@reduxjs/toolkit").AsyncThunkConfig>} */
+export const deleteRow = createAsyncThunk("rows/deleteRow", async (info) => {
+  await deleteInfo(info)
+  return info
 })
 
 const storedUser = getUserFromStorage();
@@ -76,6 +82,15 @@ const dataSlice = createSlice({
       .addCase(getData.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message || "Failed to fetch users";
+      })
+      .addCase(deleteRow.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(deleteRow.fulfilled, (state, action) => {
+        state.rows = state.rows.filter((row) => row.row_id !== action.payload.row_id);
+      })
+      .addCase(deleteRow.rejected, (state, action) => {
+        state.error = action.error.message || "Failed to delete row";
       })
 
   }
