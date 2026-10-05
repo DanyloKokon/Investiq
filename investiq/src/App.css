@@ -4,6 +4,20 @@
   font-style: normal;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  background-color: #F5F6FB;
+}
+
 .logo {
   display: flex;
   align-items: center;
@@ -27,7 +41,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  width: 100vw;
+  width: 100%;
   background-color: #FFFFFF;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
 }
@@ -42,16 +56,17 @@
 /* ======================================== All ===================================== */
 .all {
   display: flex;
-  /* align-items: stretch;
-  justify-content: flex-start; */
   align-items: center;
   justify-content: flex-start;
   flex-direction: column;
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   overflow-x: hidden;
 }
 
+.pointer:hover{
+  cursor: pointer;
+}
 /* ======================================== Oath =================================== */
 .oath-wrap {
   display: flex;
@@ -60,8 +75,9 @@
   font-family: "Roboto";
   gap: 119px;
   background-color: #F5F6FB;
-  width: 99.99vw;
-  height: 95.99vh;
+  width: 100%;
+  min-height: calc(100vh - 56px);
+  padding: 32px 24px;
 }
 
 .oath-h1 {
@@ -71,36 +87,44 @@
   color: #000000;
 }
 
+.oath-h3 {
+  margin: 0;
+  font-size: 24px;
+  color: #52555F;
+  letter-spacing: 0.1em;
+}
+
 .oath-form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 50px;
-  gap: 40px;
+  padding: 50px 24px 28px;
+  gap: 24px;
   width: 436px;
-  height: 535px;
+  min-height: 535px;
   background-color: #FFFFFF;
-  /* box-shadow: 5px 0px #AAB2C5, 20%; */
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 30px;
-
 }
 
 .oath-label {
   font-family: 'Roboto';
   font-weight: 400;
   font-size: 12px;
-  letter-spacing: 4%;
+  letter-spacing: 0.04em;
 }
 
 .oath-p {
-  font-weight: 400px;
+  margin: 0;
+  font-weight: 400;
   font-size: 12px;
+  text-align: center;
 }
 
 .oath-inp {
   width: 265px;
   height: 52px;
+  padding: 0 18px;
   border-radius: 30px;
   border: none;
   background-color: #F6F7FB;
@@ -124,6 +148,12 @@
   font-weight: 700;
   cursor: pointer;
   background-color: var(--btnOr);
+  color: #000000;
+  transition: background-color 0.2s ease;
+}
+
+.oath-btn:hover {
+  filter: brightness(0.98);
 }
 
 .oath-btn-or:hover {
@@ -133,65 +163,86 @@
 
 /* ====================================== Home ============================= */
 
+.home-sect {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 24px 0 40px;
+}
+
+.home-wrap {
+  width: min(1060px, calc(100% - 32px));
+}
+
+.home-btns {
+  display: flex;
+  align-items: flex-end;
+  text-align: left;
+  margin-bottom: 0;
+}
+
 .home-input-wrap {
+  display: flex;
+  align-items: center;
   width: 601px;
   height: 44px;
   border-radius: 16px 16px 16px 0px;
-  border: solid;
-  border-color: var(--border-color);
+  border: 2px solid var(--border-color);
   background-color: var(--backW);
-  border-width: 2px;
+  overflow: hidden;
 }
 
 .home-main {
-  width: 1060px;
-  height: 579px;
+  width: 100%;
+  min-height: 579px;
   background-color: var(--backW);
   border-radius: 0px 30px 30px 30px;
+  padding: 24px 24px 0;
 }
 
 .home-select {
+  flex: 1;
   width: 188px;
   height: 44px;
-  border-width: 0px 2px 0px 2px;
+  border: none;
+  border-left: 2px solid var(--border-color);
+  border-right: 2px solid var(--border-color);
   background-color: var(--backW);
   color: var(--back-text);
-  border-color: var(--border-color);
+  padding: 0 12px;
 }
 
 .home-summ {
   width: 126px;
   height: 44px;
   border: none;
-  padding: 0;
+  padding: 0 12px;
   border-radius: 0px 16px 16px 0px;
   background-color: var(--backW);
   color: var(--back-text);
-  
 }
 
 .home-it {
   width: 287px;
   height: 44px;
   border: none;
-  padding: 0;
+  padding: 0 14px;
   border-radius: 16px 0px 0px 0px;
   background-color: var(--backW);
-  color: var(--back-text);
+  color: #000000;
 }
 
 .home-form {
   display: flex;
   align-items: center;
+  gap: 15px;
   padding-top: 33px;
 }
 
 .home-btn-cl {
-  margin-left: 15px;
+  margin-left: 0;
   background-color: var(--backW);
-  border: solid;
-  border-width: 2px;
-  border-color: var(--border-color);
+  border: 2px solid var(--border-color);
   width: 125px;
   height: 44px;
   border-radius: 16px;
@@ -206,14 +257,16 @@
   height: 40px;
   font-size: 9px;
   font-weight: 900;
-  letter-spacing: 4%;
+  letter-spacing: 0.04em;
   margin-left: 50px;
   background-color: var(--backW);
   color: #000000;
-  border: var(--border-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0 6px;
 }
 
-.home-spends{
+.home-spends {
   width: 138px;
   height: 40px;
   border: none;
@@ -222,6 +275,7 @@
   font-size: 12px;
   color: #000000;
   background-color: #FAFBFD;
+  cursor: pointer;
 }
 
 .home-spends.active {
@@ -229,47 +283,90 @@
   color: var(--btnOr);
 }
 
-.home-btns{
-  text-align: left;
-}
-
 /* ======================================= Table ========================= */
-.table-head{
+.table-head {
   width: 760px;
   height: 40px;
   background-color: #F5F6FB;
 }
 
-.table-head th{
+.table-head th {
   height: 40px;
   background-color: #F5F6FB;
   border-bottom: 2px solid var(--border-color);
 }
 
-.table-head th:first-child{
+.table-head th:first-child {
   border-top-left-radius: 16px;
 }
 
-.table-head th:last-child{
+.table-head th:last-child {
   border-top-right-radius: 16px;
 }
 
-.table{
+.table {
   width: 760px;
- 
   border-collapse: separate;
   border-spacing: 0;
-  margin-left: 20px;
-  margin-top: 59px;
+  margin-top: 50px;
 }
 
-.table-tr{
+.table-tr {
   height: 40px;
   width: 760px;
 }
 
-.table-tr td{
-   border-right: 1px solid var(--border-color);
+.table-tr td {
+  border-right: 1px solid var(--border-color);
   border-left: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
 }
+
+.con-table {
+  width: 230px;
+  font-size: 12px;
+  font-weight: 400;
+  height: 266px;
+  margin-top: 50px;
+}
+
+.con-thead {
+  height: 38px;
+  min-width: 230px;
+  width: 100%;
+}
+
+.con-th {
+  background-color: var(--border-color);
+  border-radius: 16px 16px 0px 0px;
+}
+
+.con-budy {
+  width: 230px;
+  background-color: var(--border-color);
+}
+
+.con-b-tr {
+  width: 230px;
+}
+
+.con-td {
+  width: 230px;
+  background-color: var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50%;
+  height: 38px;
+  padding: 0 12px;
+}
+
+.table-wrap {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 30px;
+  padding-top: 24px;
+}
+

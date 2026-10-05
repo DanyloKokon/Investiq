@@ -16,7 +16,7 @@ export const postRow = createAsyncThunk("rows/postRow", async (row) => {
 export const getUser = createAsyncThunk("users/getUser", async (user) => {
   return await findUser(user)
 })
-/** @type {import("@reduxjs/toolkit").AsyncThunk<{ user_id: string | number, row_id: string | number }, { user_id: string | number, row_id: string | number }, import("@reduxjs/toolkit").AsyncThunkConfig>} */
+// /** @type {import("@reduxjs/toolkit").AsyncThunk<{ user_id: string | number, row_id: string | number }, { user_id: string | number, row_id: string | number }, import("@reduxjs/toolkit").AsyncThunkConfig>} */
 export const deleteRow = createAsyncThunk("rows/deleteRow", async (info) => {
   await deleteInfo(info)
   return info

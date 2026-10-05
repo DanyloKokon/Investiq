@@ -27,6 +27,14 @@ function Table() {
     const dispatch = useDispatch<typeof store.dispatch>()
     const storedUser = getUserFromStorage();
     const id = storedUser.id
+    const visibleRows = rows.length > 0 ? rows : Array.from({ length: 9 }, (_, index) => ({
+        row_id: `placeholder-${index}`,
+        date: '',
+        description: '',
+        categorie: '',
+        sum: 0,
+    }));
+
     useEffect(() => {
         if (status === 'idle') {
             dispatch(getData({ user_id: id }))
@@ -53,21 +61,18 @@ function Table() {
                     </tr>
                 </thead>
                 <tbody className="table-body">
-                    {rows.map((r) => (
-                        <tr key={r.row_id} className="table-tr">
-                            <td>{r.date}</td>
-                            <td>{r.description}</td>
-                            <td>{r.categorie}</td>
-                            <td>{r.sum}</td>
+                    {visibleRows.map((r, index) => (
+                        <tr key={r.row_id ?? `placeholder-${index}`} className="table-tr">
+                            <td>{r.date || ' '}</td>
+                            <td>{r.description || ' '}</td>
+                            <td>{r.categorie || ' '}</td>
+                            <td>{r.sum || ' '}</td>
                             <td>
-                                <button
-                                    type="button"
-                                    aria-label="Delete row"
-                                    title="Delete row"
-                                    onClick={() => handleDeleteRow(id, r.row_id)}
-                                >
-                                    <IoTrashOutline aria-hidden="true" />
-                                </button>
+                                {rows.length > 0 ? (
+                                    <IoTrashOutline className="pointer" onClick={() => handleDeleteRow(id, r.row_id)} />
+                                ) : (
+                                    <span aria-hidden="true">&nbsp;</span>
+                                )}
                             </td>
                         </tr>
                     ))}

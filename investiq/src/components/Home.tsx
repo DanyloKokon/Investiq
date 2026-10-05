@@ -3,9 +3,10 @@ import Table from "./aditionalComp/Table";
 import { useDispatch, useSelector } from "react-redux";
 import { postRow } from "../redux/reducer";
 import { getUserFromStorage } from "../utils/localStorage";
+import { months } from "./map";
 function Home() {
 
-    // const { user } = useSelector((state) => state.users)
+    const { rows } = useSelector((state) => state.rows)
     const storedUser = getUserFromStorage();
     const [item, setItem] = useState<string>('')
     const [date, setDate] = useState<string>('')
@@ -82,6 +83,19 @@ function Home() {
         }
     }
 
+    const monthlyTotals = months.map((month, index) => {
+        const monthNumber = String(index + 1).padStart(2, '0');
+
+        const total = rows.reduce((sum, row) => {
+            // Date input values use YYYY-MM-DD, so positions 5–6 contain the month.
+            return row.date.slice(5, 7) === monthNumber
+                ? sum + Number(row.sum)
+                : sum;
+        }, 0);
+
+        return { ...month, total };
+    });
+
     return (<section className="home-sect">
         <div></div>
         <div className="home-wrap">
@@ -116,9 +130,30 @@ function Home() {
                     <button style={{ "marginLeft": "27px" }} onClick={() => setVar(1)} className="oath-btn oath-btn-or">Ввести</button>
                     <button onClick={() => setVar(2)} className="home-btn-cl">Очистити</button>
                 </form>
-                <div>
+                <div className="table-wrap">
                     <Table />
-                    <table></table>
+                    <table className="con-table">
+                        <thead className="con-thead">
+                            <tr className="con-tr">
+                                <th className="con-th">
+                                    зведення
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="con-body">
+
+                            {monthlyTotals.map((month) => (
+                                <tr className="con-b-tr" key={month.month}>
+                                    <td className="con-td">
+                                        <p>{month.month}</p>
+                                        <p>{month.total.toFixed(2)}</p>
+                                    </td>
+
+                                </tr>
+                            ))}
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
