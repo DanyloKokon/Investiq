@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, combineReducers } from "@reduxjs/toolkit";
-import { fetchData, postUser as addUser, getUser as findUser, postRow as addRow, deleteRow as deleteInfo } from '../components/data'
+import { fetchData, postUser as addUser, getUser as findUser, postRow as addRow, deleteRow as deleteInfo, postUserBalance as postBalance } from '../components/data'
 import { saveUserToStorage, getUserFromStorage, clearUserFromStorage } from "../utils/localStorage";
 
 /** @type {import("@reduxjs/toolkit").AsyncThunk<any, { user_id: string | number }, import("@reduxjs/toolkit").AsyncThunkConfig>} */
@@ -8,6 +8,9 @@ export const getData = createAsyncThunk("users/fetchUsers", async (user_id) => {
 })
 export const postUser = createAsyncThunk("users/postUser", async (newUser) => {
   return await addUser(newUser)
+})
+export const postUserBalance = createAsyncThunk("users/postUser", async (num) => {
+  return await postBalance(num)
 })
 export const postRow = createAsyncThunk("rows/postRow", async (row) => {
   console.log(row);

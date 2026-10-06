@@ -1,13 +1,14 @@
 import { useState } from "react";
 import Table from "./aditionalComp/Table";
 import { useDispatch, useSelector } from "react-redux";
-import { postRow } from "../redux/reducer";
+import { postRow, postUserBalance } from "../redux/reducer";
 import { getUserFromStorage } from "../utils/localStorage";
 import { months } from "./map";
 function Home() {
 
     const { rows } = useSelector((state) => state.rows)
     const storedUser = getUserFromStorage();
+    const [usBalance, setUsBalance] = useState<number>(0)
     const [item, setItem] = useState<string>('')
     const [date, setDate] = useState<string>('')
     const [choise, setChoise] = useState<string>('')
@@ -71,10 +72,10 @@ function Home() {
         if (varr === 1) {
             dispatch(postRow({ date: date, description: item, categorie: choise, sum: sum, user_id: storedUser.id }))
             console.log("post");
-            setSum(0)
-            setDate('')
-            setChoise('')
-            setItem('')
+            // setSum(0)
+            // setDate('')
+            // setChoise('')
+            // setItem('')
         } else if (varr === 2) {
             setSum(0)
             setDate('')
@@ -96,8 +97,19 @@ function Home() {
         return { ...month, total };
     });
 
+    const handleSetbalance = (num: number) => {
+        if(usBalance){
+            dispatch(postUserBalance({balance: num, id: storedUser.id}))
+        }
+    }
+
     return (<section className="home-sect">
-        <div></div>
+        <div className="home-top-wrap">
+            <p>Баланс:</p>
+            <input value={usBalance} onChange={(e)=>setUsBalance(e.target.value)} type="number" className="home-btn-inp" />
+            <button onClick={()=>handleSetbalance(usBalance)} className="home-btn-inp home-btn-inp-button">підтвердити</button>
+            <button>Перейти до розрахунків</button>
+        </div>
         <div className="home-wrap">
             <div className="home-btns">
                 <button
@@ -132,7 +144,7 @@ function Home() {
                 </form>
                 <div className="table-wrap">
                     <Table />
-                    <table className="con-table">
+                    {/* <table className="con-table">
                         <thead className="con-thead">
                             <tr className="con-tr">
                                 <th className="con-th">
@@ -141,19 +153,34 @@ function Home() {
                             </tr>
                         </thead>
                         <tbody className="con-body">
-
-                            {monthlyTotals.map((month) => (
-                                <tr className="con-b-tr" key={month.month}>
+                            <ul role="listbox">
+                                {monthlyTotals.map((month) => (
+                                <li>
+                                    <tr className="con-b-tr" key={month.month}>
                                     <td className="con-td">
                                         <p>{month.month}</p>
                                         <p>{month.total.toFixed(2)}</p>
                                     </td>
 
                                 </tr>
+                                </li>
                             ))}
+                            </ul>
+
 
                         </tbody>
-                    </table>
+                    </table> */}
+                    <div className="monthly-summary">
+                        <h2>зведення</h2>
+                        <ul className="monthly-summary-list">
+                            {monthlyTotals.map((month) => (
+                                <li key={month.month}>
+                                    <p>{month.month}</p>
+                                    <p>{month.total.toFixed(2)}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

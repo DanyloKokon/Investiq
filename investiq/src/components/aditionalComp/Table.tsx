@@ -50,34 +50,36 @@ function Table() {
     return (
         <>
             {error && <p role="alert">{error}</p>}
-            <table className="table">
-                <thead>
-                    <tr className="table-head">
-                        {trow.map((i) => (
-                            <th key={i.name}>
-                                {i.name}
-                            </th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody className="table-body">
-                    {visibleRows.map((r, index) => (
-                        <tr key={r.row_id ?? `placeholder-${index}`} className="table-tr">
-                            <td>{r.date || ' '}</td>
-                            <td>{r.description || ' '}</td>
-                            <td>{r.categorie || ' '}</td>
-                            <td>{r.sum || ' '}</td>
-                            <td>
-                                {rows.length > 0 ? (
-                                    <IoTrashOutline className="pointer" onClick={() => handleDeleteRow(id, r.row_id)} />
-                                ) : (
-                                    <span aria-hidden="true">&nbsp;</span>
-                                )}
-                            </td>
+            <div className="table-scroll">
+                <table className="table">
+                    <thead>
+                        <tr className="table-head">
+                            {trow.map((i) => (
+                                <th key={i.name}>
+                                    {i.name}
+                                </th>
+                            ))}
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody className="table-body">
+                        {visibleRows.map((r, index) => (
+                            <tr key={r.row_id ?? `placeholder-${index}`} className="table-tr">
+                                <td>{r.date || ' '}</td>
+                                <td>{r.description || ' '}</td>
+                                <td>{r.categorie || ' '}</td>
+                                <td>{r.sum || ' '}</td>
+                                <td>
+                                    {rows.length > 0 ? (
+                                        <IoTrashOutline className="pointer" onClick={() => handleDeleteRow(id, r.row_id)} />
+                                    ) : (
+                                        <span aria-hidden="true">&nbsp;</span>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </>
     );
 }

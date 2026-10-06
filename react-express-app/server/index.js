@@ -37,6 +37,37 @@ app.post('/addUser', (req, res) => {
 
 })
 
+app.post('/addUserBalance', (req, res) => {
+
+  const { balance } = req.body
+  const insert_query = 'INSERT INTO users balance VALUES $1'
+  con.query(insert_query, [balance], (err, result) => {
+
+    if (!err) {
+      console.log(result);
+      res.send("POSTED DATA")
+    } else {
+      res.send(err)
+    }
+
+  })
+
+})
+
+app.put('/putBalance', (req, res) => {
+  
+  const{balance, id} = req.body;
+
+  const query = "UPDATE public.users SET balance = $1 WHERE id = $2"
+  con.query(query, [balance, id], (err, result) => {
+    if (err) {
+      res.send(err)
+    } else (
+      res.send(result.rows)
+    )
+  })
+})
+
 app.post('/postRow', (req, res) => {
 
   const { date, description, categorie, sum, user_id } = req.body

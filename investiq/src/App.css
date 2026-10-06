@@ -166,6 +166,8 @@ body {
 .home-sect {
   width: 100%;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   padding: 24px 0 40px;
 }
@@ -210,6 +212,15 @@ body {
   background-color: var(--backW);
   color: var(--back-text);
   padding: 0 12px;
+ 
+}
+
+.home-top-wrap{
+height: 44px;
+margin-bottom: 48px;
+display: flex;
+align-items: center;
+gap: 18px;
 }
 
 .home-summ {
@@ -283,6 +294,22 @@ body {
   color: var(--btnOr);
 }
 
+.home-btn-inp{
+  width: 125px;
+  height: 44px;
+  color: #000000;
+  border-radius: 16px;
+  background-color: transparent;
+  border: 2px solid;
+  border-color: var(--back-text);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+ .home-btn-inp-button:hover{
+ cursor: pointer;
+} 
+
 /* ======================================= Table ========================= */
 .table-head {
   width: 760px;
@@ -294,6 +321,9 @@ body {
   height: 40px;
   background-color: #F5F6FB;
   border-bottom: 2px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .table-head th:first-child {
@@ -304,16 +334,25 @@ body {
   border-top-right-radius: 16px;
 }
 
+.table-scroll {
+  flex: 0 0 760px;
+  width: 760px;
+  max-height: 380px;
+  margin-top: 50px;
+  overflow-y: auto;
+}
+
 .table {
   width: 760px;
   border-collapse: separate;
   border-spacing: 0;
-  margin-top: 50px;
+  margin-top: 0;
 }
 
 .table-tr {
   height: 40px;
   width: 760px;
+  box-sizing: border-box;
 }
 
 .table-tr td {
@@ -322,7 +361,7 @@ body {
   border-bottom: 1px solid var(--border-color);
 }
 
-.con-table {
+/* .con-table {
   width: 230px;
   font-size: 12px;
   font-weight: 400;
@@ -359,7 +398,7 @@ body {
   gap: 50%;
   height: 38px;
   padding: 0 12px;
-}
+} */
 
 .table-wrap {
   display: flex;
@@ -367,6 +406,43 @@ body {
   align-items: flex-start;
   justify-content: center;
   gap: 30px;
-  padding-top: 24px;
 }
 
+.monthly-summary {
+  width: 230px;
+  margin-top: 50px;
+  font-size: 12px;
+}
+
+.monthly-summary h2 {
+  margin: 0;
+  padding: 11px 12px;
+  background-color: var(--border-color);
+  border-radius: 16px 16px 0 0;
+  font-weight: 700;
+  font-size: 12px;
+  color:#000000 ;
+}
+
+.monthly-summary-list {
+  height: 228px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+  background-color: var(--border-color);
+}
+
+.monthly-summary-list li {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 38px;
+  padding: 0 12px;
+  border-top: 1px solid var(--backW);
+}
+
+.monthly-summary-list p {
+  margin: 0;
+}

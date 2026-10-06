@@ -56,6 +56,25 @@ export const postUser = async (newUser: User) => {
     }
 };
 
+export const postUserBalance = async (balance) => {
+    try {
+        const response = await fetch('/api/putBalance', {
+            method: 'PUT',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(balance)
+        });
+        if (!response.ok) {
+            throw new Error(`API error! Status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (err) {
+        if (err instanceof Error) {
+            throw new Error(`Data error Status: ${err.message}`);
+        }
+        throw new Error('Data error Status: unknown error');
+    }
+};
+
 export const postRow = async (row: Row) => {
     try {
         const response = await fetch('/api/postRow', {
