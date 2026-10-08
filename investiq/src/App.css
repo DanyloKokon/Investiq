@@ -310,6 +310,17 @@ gap: 18px;
  cursor: pointer;
 } 
 
+.checkout{
+  width: 185px;
+  height: 24px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--back-text);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
 /* ======================================= Table ========================= */
 .table-head {
   width: 760px;

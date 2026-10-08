@@ -12,6 +12,7 @@ interface TableRow {
     description: string;
     categorie: string;
     sum: number;
+    type: string;
 }
 
 interface TableState {
@@ -22,11 +23,11 @@ interface TableState {
     };
 }
 
-function Table() {
+function Table({ type }: { type?: string }) {
     const { rows, status, error } = useSelector((state: TableState) => state.rows)
     const dispatch = useDispatch<typeof store.dispatch>()
     const storedUser = getUserFromStorage();
-    const id = storedUser.id
+    const id = storedUser?.id
     const visibleRows = rows.length > 0 ? rows : Array.from({ length: 9 }, (_, index) => ({
         row_id: `placeholder-${index}`,
         date: '',
@@ -36,11 +37,10 @@ function Table() {
     }));
 
     useEffect(() => {
-        if (status === 'idle') {
-            dispatch(getData({ user_id: id }))
-            return
+        if (status === 'idle' && id) {
+            dispatch(getData({ user_id: id, type: type ?? 'costs' }))
         }
-    }, [dispatch, id, status])
+    }, [dispatch, id, status, type])
 
 
     function handleDeleteRow(userId: string | number, rowId: string | number) {

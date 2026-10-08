@@ -1,7 +1,7 @@
 interface User {
     username?: string;
-    password: string | number;
-    email: string;
+    password?: string | number;
+    email?: string;
     user_id?: string;
 }
 
@@ -11,6 +11,7 @@ interface Row {
     categorie: string;
     sum: number;
     user_id: string;
+    type?: string
 }
 
 interface RowIdentity {
@@ -18,12 +19,12 @@ interface RowIdentity {
     row_id: string | number;
 }
 
-export const fetchData = async (user_id: string) => {
+export const fetchData = async (inf) => {
     try {
         const response = await fetch('/api/data', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify(user_id)
+            body: JSON.stringify(inf)
         });
         if (!response.ok) {
             throw new Error(`API error! Status: ${response.status}`);
@@ -97,6 +98,25 @@ export const postRow = async (row: Row) => {
 export const getUser = async (user: User) => {
     try {
         const response = await fetch('/api/id', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(user)
+        });
+        if (!response.ok) {
+            throw new Error(`API error! Status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (err) {
+        if (err instanceof Error) {
+            throw new Error(`Data error Status: ${err.message}`);
+        }
+        throw new Error('Data error Status: unknown error');
+    }
+};
+
+export const getUserBalance = async (user: User) => {
+    try {
+        const response = await fetch('/api/idb', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify(user)

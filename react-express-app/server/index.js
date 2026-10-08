@@ -70,9 +70,9 @@ app.put('/putBalance', (req, res) => {
 
 app.post('/postRow', (req, res) => {
 
-  const { date, description, categorie, sum, user_id } = req.body
-  const insert_query = 'INSERT INTO data (description, categorie, sum, user_id, date) VALUES ($1, $2, $3, $4, $5)'
-  con.query(insert_query, [description, categorie, sum, user_id, date], (err, result) => {
+  const { date, description, categorie, sum, user_id, type } = req.body
+  const insert_query = 'INSERT INTO data (description, categorie, sum, user_id, date, type) VALUES ($1, $2, $3, $4, $5, 6$)'
+  con.query(insert_query, [description, categorie, sum, user_id, date, type], (err, result) => {
 
     if (!err) {
       console.log(result);
@@ -101,7 +101,7 @@ app.post('/postRow', (req, res) => {
 // FETCH ALL function
 app.post('/data', (req, res) => {
   const {user_id} = req.body
-  const query = "SELECT * FROM public.data where (user_id) = ($1)"
+  const query = "SELECT * FROM public.data where (user_id, type) = ($1, $2)"
   con.query(query,[user_id], (err, result) => {
     if (!err) {
       console.log(result.rows);
@@ -129,8 +129,20 @@ app.post('/data', (req, res) => {
 // FETCH BY ID function
 app.post('/id', (req, res) => {
   const { password, email } = req.body
-  const fetch_query = "SELECT * FROM public.users where (password, email) = ($1, $2)"
+  const fetch_query = "SELECT email, id, balance, username FROM public.users where (password, email) = ($1, $2)"
   con.query(fetch_query, [password, email], (err, result) => {
+    if (err) {
+      res.send(err)
+    } else (
+      res.send(result.rows)
+    )
+  })
+})
+
+app.post('/idb', (req, res) => {
+  const { id } = req.body
+  const fetch_query = "SELECT balance FROM public.users where id = $1"
+  con.query(fetch_query, [id], (err, result) => {
     if (err) {
       res.send(err)
     } else (

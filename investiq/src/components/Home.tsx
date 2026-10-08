@@ -1,190 +1,54 @@
-import { useState } from "react";
-import Table from "./aditionalComp/Table";
-import { useDispatch, useSelector } from "react-redux";
-import { postRow, postUserBalance } from "../redux/reducer";
+import Costs from "./Costs";
+import Income from "./Income";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { getUserFromStorage } from "../utils/localStorage";
-import { months } from "./map";
-function Home() {
+import { getUsBal, postUserBalance } from "../redux/reducer";
 
-    const { rows } = useSelector((state) => state.rows)
+function Home() {
     const storedUser = getUserFromStorage();
-    const [usBalance, setUsBalance] = useState<number>(0)
-    const [item, setItem] = useState<string>('')
-    const [date, setDate] = useState<string>('')
-    const [choise, setChoise] = useState<string>('')
-    const [sum, setSum] = useState<number>(0)
-    const [varr, setVar] = useState<number>(0)
+    const [usBalance, setUsBalance] = useState<number>(storedUser.balance)
     const [activeTab, setActiveTab] = useState<'spends' | 'income'>('spends')
     const dispatch = useDispatch()
-    const options = [
-        {
-            value: '',
-            text: 'Категорія товару'
-        },
-        {
-            value: 'transport',
-            text: 'Транспорт'
-        },
-        {
-            value: 'products',
-            text: 'Продукти'
-        },
-        {
-            value: 'health',
-            text: 'Здоров’я'
-        },
-        {
-            value: 'alcohol',
-            text: 'Алкоголь'
-        },
-        {
-            value: 'entertainment',
-            text: 'Розваги'
-        },
-        {
-            value: 'all-for-home',
-            text: 'Все для дому'
-        },
-        {
-            value: 'electronic',
-            text: 'Техніка'
-        },
-        {
-            value: 'bills',
-            text: 'Комуналка, зв’язок'
-        },
-        {
-            value: 'sport-hobby',
-            text: 'Спорт, хобі'
-        },
-        {
-            value: 'education',
-            text: 'Навчання'
-        },
-        {
-            value: 'else',
-            text: 'Інше'
-        }
-    ]
 
-    function handelSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault()
-        if (varr === 1) {
-            dispatch(postRow({ date: date, description: item, categorie: choise, sum: sum, user_id: storedUser.id }))
-            console.log("post");
-            // setSum(0)
-            // setDate('')
-            // setChoise('')
-            // setItem('')
-        } else if (varr === 2) {
-            setSum(0)
-            setDate('')
-            setChoise('')
-            setItem('')
-        }
-    }
-
-    const monthlyTotals = months.map((month, index) => {
-        const monthNumber = String(index + 1).padStart(2, '0');
-
-        const total = rows.reduce((sum, row) => {
-            // Date input values use YYYY-MM-DD, so positions 5–6 contain the month.
-            return row.date.slice(5, 7) === monthNumber
-                ? sum + Number(row.sum)
-                : sum;
-        }, 0);
-
-        return { ...month, total };
-    });
+    useEffect(() => {
+        dispatch(getUsBal({ id: storedUser.id }))
+    }, [dispatch, usBalance])
 
     const handleSetbalance = (num: number) => {
-        if(usBalance){
-            dispatch(postUserBalance({balance: num, id: storedUser.id}))
+        if (usBalance) {
+            dispatch(postUserBalance({ balance: num, id: storedUser.id }))
         }
     }
-
-    return (<section className="home-sect">
-        <div className="home-top-wrap">
-            <p>Баланс:</p>
-            <input value={usBalance} onChange={(e)=>setUsBalance(e.target.value)} type="number" className="home-btn-inp" />
-            <button onClick={()=>handleSetbalance(usBalance)} className="home-btn-inp home-btn-inp-button">підтвердити</button>
-            <button>Перейти до розрахунків</button>
-        </div>
-        <div className="home-wrap">
-            <div className="home-btns">
-                <button
-                    className={`home-spends ${activeTab === 'spends' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('spends')}
-                >
-                    Витрати
-                </button>
-                <button
-                    className={`home-spends ${activeTab === 'income' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('income')}
-                >
-                    Дохід
-                </button>
+    return (
+        <section className="home-sect">
+            <div className="home-top-wrap">
+                <p>Баланс:</p>
+                <input value={usBalance} onChange={(e) => setUsBalance(e.target.value)} type="number" className="home-btn-inp" />
+                <button onClick={() => handleSetbalance(usBalance)} className="home-btn-inp home-btn-inp-button">підтвердити</button>
+                <button className="checkout">Перейти до розрахунків</button>
             </div>
-            <div className="home-main">
-                <form onSubmit={handelSubmit} className="home-form" >
-                    <input value={date} onChange={(e) => setDate(e.target.value)} type="date" className="home-date" name="date" />
-                    <div className="home-input-wrap">
-                        <input name="description" placeholder="Опис товару" value={item} onChange={(e) => setItem(e.target.value)} className="home-it" type="text" />
-                        <select onChange={(e) => setChoise(e.target.value)} className="home-select" name="Категорія товару" id="">
-                            {options.map((opt) => (
-                                <option value={opt.value}>
-                                    {opt.text}
-                                </option>
-                            ))}
-                        </select>
-                        <input name="sum" onChange={(e) => setSum(e.target.value)} value={sum} className="home-summ" type="number" />
-                    </div>
-                    <button style={{ "marginLeft": "27px" }} onClick={() => setVar(1)} className="oath-btn oath-btn-or">Ввести</button>
-                    <button onClick={() => setVar(2)} className="home-btn-cl">Очистити</button>
-                </form>
-                <div className="table-wrap">
-                    <Table />
-                    {/* <table className="con-table">
-                        <thead className="con-thead">
-                            <tr className="con-tr">
-                                <th className="con-th">
-                                    зведення
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="con-body">
-                            <ul role="listbox">
-                                {monthlyTotals.map((month) => (
-                                <li>
-                                    <tr className="con-b-tr" key={month.month}>
-                                    <td className="con-td">
-                                        <p>{month.month}</p>
-                                        <p>{month.total.toFixed(2)}</p>
-                                    </td>
-
-                                </tr>
-                                </li>
-                            ))}
-                            </ul>
-
-
-                        </tbody>
-                    </table> */}
-                    <div className="monthly-summary">
-                        <h2>зведення</h2>
-                        <ul className="monthly-summary-list">
-                            {monthlyTotals.map((month) => (
-                                <li key={month.month}>
-                                    <p>{month.month}</p>
-                                    <p>{month.total.toFixed(2)}</p>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+            <div className="home-wrap">
+                <div className="home-btns">
+                    <button
+                        className={`home-spends ${activeTab === 'spends' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('spends')}
+                    >
+                        Витрати
+                    </button>
+                    <button
+                        className={`home-spends ${activeTab === 'income' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('income')}
+                    >
+                        Дохід
+                    </button>
                 </div>
+                {activeTab === 'income' && <Income/>}
+                {activeTab === 'spends' && <Costs/>}
             </div>
-        </div>
-    </section>);
+
+        </section>
+    )
 }
 
 export default Home;
