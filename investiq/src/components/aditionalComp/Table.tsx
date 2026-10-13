@@ -5,6 +5,7 @@ import { getData, deleteRow } from "../../redux/reducer";
 import { IoTrashOutline } from "react-icons/io5";
 import { getUserFromStorage } from "../../utils/localStorage";
 import { store } from "../../redux/store";
+import { useParams } from "react-router";
 
 interface TableRow {
     row_id: string | number;
@@ -23,9 +24,10 @@ interface TableState {
     };
 }
 
-function Table({ type }: { type?: string }) {
+function Table() {
     const { rows, status, error } = useSelector((state: TableState) => state.rows)
     const dispatch = useDispatch<typeof store.dispatch>()
+    const { type } = useParams()
     const storedUser = getUserFromStorage();
     const id = storedUser?.id
     const visibleRows = rows.length > 0 ? rows : Array.from({ length: 9 }, (_, index) => ({
@@ -37,10 +39,11 @@ function Table({ type }: { type?: string }) {
     }));
 
     useEffect(() => {
-        if (status === 'idle' && id) {
-            dispatch(getData({ user_id: id, type: type ?? 'costs' }))
+        if (id) {
+            console.log(type);
+            dispatch(getData({ user_id: id, type: type }))
         }
-    }, [dispatch, id, status, type])
+    }, [id, status, type])
 
 
     function handleDeleteRow(userId: string | number, rowId: string | number) {

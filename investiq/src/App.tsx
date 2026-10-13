@@ -11,7 +11,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/investiq/oath" element={<Enter />} />
-          <Route path="/investiq/home" element={<Home />} />
+          <Route path="/investiq/home/:type" element={<Home />}/>
         </Routes>
       </BrowserRouter></div>
   )

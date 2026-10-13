@@ -83,7 +83,7 @@ function Income() {
                 <button onClick={() => setVar(2)} className="home-btn-cl">Очистити</button>
             </form>
             <div className="table-wrap">
-                <Table type="costs" />
+                <Table type="income" />
                 {/* <table className="con-table">
                         <thead className="con-thead">
                             <tr className="con-tr">

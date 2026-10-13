@@ -71,7 +71,7 @@ app.put('/putBalance', (req, res) => {
 app.post('/postRow', (req, res) => {
 
   const { date, description, categorie, sum, user_id, type } = req.body
-  const insert_query = 'INSERT INTO data (description, categorie, sum, user_id, date, type) VALUES ($1, $2, $3, $4, $5, 6$)'
+  const insert_query = 'INSERT INTO data (description, categorie, sum, user_id, date, type) VALUES ($1, $2, $3, $4, $5, $6)'
   con.query(insert_query, [description, categorie, sum, user_id, date, type], (err, result) => {
 
     if (!err) {
@@ -100,9 +100,9 @@ app.post('/postRow', (req, res) => {
 
 // FETCH ALL function
 app.post('/data', (req, res) => {
-  const {user_id} = req.body
+  const {user_id, type} = req.body
   const query = "SELECT * FROM public.data where (user_id, type) = ($1, $2)"
-  con.query(query,[user_id], (err, result) => {
+  con.query(query,[user_id, type], (err, result) => {
     if (!err) {
       console.log(result.rows);
       res.send(result.rows)

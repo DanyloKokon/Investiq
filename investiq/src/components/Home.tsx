@@ -2,14 +2,18 @@ import Costs from "./Costs";
 import Income from "./Income";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router";
 import { getUserFromStorage } from "../utils/localStorage";
 import { getUsBal, postUserBalance } from "../redux/reducer";
 
 function Home() {
+    const navigate = useNavigate()
+    const {type} = useParams()
     const storedUser = getUserFromStorage();
     const [usBalance, setUsBalance] = useState<number>(storedUser.balance)
     const [activeTab, setActiveTab] = useState<'spends' | 'income'>('spends')
     const dispatch = useDispatch()
+    console.log(type);
 
     useEffect(() => {
         dispatch(getUsBal({ id: storedUser.id }))
@@ -31,20 +35,20 @@ function Home() {
             <div className="home-wrap">
                 <div className="home-btns">
                     <button
-                        className={`home-spends ${activeTab === 'spends' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('spends')}
+                        className={`home-spends ${type === 'costs' ? 'active' : ''}`}
+                        onClick={() =>  navigate("/investiq/home/costs", { replace: true })}
                     >
                         Витрати
                     </button>
                     <button
-                        className={`home-spends ${activeTab === 'income' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('income')}
+                        className={`home-spends ${type === 'income' ? 'active' : ''}`}
+                        onClick={() =>  navigate("/investiq/home/income", { replace: true })}
                     >
                         Дохід
                     </button>
                 </div>
-                {activeTab === 'income' && <Income/>}
-                {activeTab === 'spends' && <Costs/>}
+                {type === 'income' && <Income/>}
+                {type === 'costs' && <Costs/>}
             </div>
 
         </section>
