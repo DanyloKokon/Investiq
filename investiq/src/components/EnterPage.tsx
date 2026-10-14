@@ -15,7 +15,7 @@ function Enter() {
 
     useEffect(() => {
         if (isLogined) {
-            navigate('/investiq/home')
+            navigate('/Investiq/home')
         }
     }, [isLogined, navigate])
 
@@ -40,7 +40,7 @@ function Enter() {
             setEmail('')
             setPass('')
             console.log(1);
-            navigate('/investiq/home/costs')
+            navigate('/Investiq/home/costs')
         }
     }
 

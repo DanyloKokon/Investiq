@@ -46,8 +46,8 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/investiq/oath" element={<Enter />} />
-          <Route path="/investiq/home/:type" element={<Home />}/>
+          <Route path="/Investiq/oath" element={<Enter />} />
+          <Route path="/Investiq/home/:type" element={<Home />}/>
         </Routes>
       </BrowserRouter></div>
   )

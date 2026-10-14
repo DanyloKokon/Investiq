@@ -7,7 +7,7 @@ function Header() {
     const user = getUserFromStorage()
     async function handleOut() {
         const { error } = await supabase.auth.signOut()
-        navigate('/investiq/oath')
+        navigate('/Investiq/oath')
     }
 
     return (

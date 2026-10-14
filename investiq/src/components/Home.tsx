@@ -36,13 +36,13 @@ function Home() {
                 <div className="home-btns">
                     <button
                         className={`home-spends ${type === 'costs' ? 'active' : ''}`}
-                        onClick={() =>  navigate("/investiq/home/costs", { replace: true })}
+                        onClick={() =>  navigate("/Investiq/home/costs", { replace: true })}
                     >
                         Витрати
                     </button>
                     <button
                         className={`home-spends ${type === 'income' ? 'active' : ''}`}
-                        onClick={() =>  navigate("/investiq/home/income", { replace: true })}
+                        onClick={() =>  navigate("/Investiq/home/income", { replace: true })}
                     >
                         Дохід
                     </button>
