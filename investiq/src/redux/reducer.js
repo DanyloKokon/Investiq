@@ -45,6 +45,7 @@ const accountSlice = createSlice({
   name: "account",
   initialState: {
     user: storedUser ? (Array.isArray(storedUser) ? storedUser : [storedUser]) : [],
+    balance: 0,
     isLogined: storedUser ? true : false,
     status: "idle",
     error: null,
@@ -53,6 +54,9 @@ const accountSlice = createSlice({
     setAuthUser(state, action) {
       setCurrentUser(state, action.payload);
     },
+    setBalance(state, action){
+      state.balance = action.payload
+    }
   },
   extraReducers(builder) {
     builder
@@ -155,7 +159,7 @@ const dataSlice = createSlice({
 })
 
 
-export const { setAuthUser } = accountSlice.actions;
+export const { setAuthUser, setBalance } = accountSlice.actions;
 export const { setRows } = dataSlice.actions;
 
 export const rootReducer = combineReducers({
