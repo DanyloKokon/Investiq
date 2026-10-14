@@ -6,6 +6,7 @@ import { IoTrashOutline } from "react-icons/io5";
 import { getUserFromStorage } from "../../utils/localStorage";
 import { store } from "../../redux/store";
 import { useParams } from "react-router";
+import { supabase } from "../../utils/supabase";
 
 interface TableRow {
     row_id: string | number;
@@ -41,7 +42,12 @@ function Table() {
     useEffect(() => {
         if (id) {
             console.log(type);
-            dispatch(getData({ user_id: id, type: type }))
+            // dispatch(getData({ user_id: id, type: type }))
+            const { data, error } = supabase
+                .from('data')
+                .select()
+                .eq('user_id', storedUser.id)
+                .eq('type', type)
         }
     }, [id, status, type])
 

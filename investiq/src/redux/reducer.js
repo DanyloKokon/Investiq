@@ -29,6 +29,17 @@ export const deleteRow = createAsyncThunk("rows/deleteRow", async (info) => {
 })
 
 const storedUser = getUserFromStorage();
+console.log(storedUser);
+
+const setCurrentUser = (state, user) => {
+  state.user = user ? [user] : [];
+  state.isLogined = Boolean(user);
+  if (user) {
+    saveUserToStorage(user);
+  } else {
+    clearUserFromStorage();
+  }
+};
 
 const accountSlice = createSlice({
   name: "account",
@@ -39,7 +50,9 @@ const accountSlice = createSlice({
     error: null,
   },
   reducers: {
-
+    setAuthUser(state, action) {
+      setCurrentUser(state, action.payload);
+    },
   },
   extraReducers(builder) {
     builder
@@ -140,7 +153,7 @@ const dataSlice = createSlice({
 })
 
 
-export const { } = accountSlice.actions;
+export const { setAuthUser } = accountSlice.actions;
 
 export const rootReducer = combineReducers({
   users: accountSlice.reducer,

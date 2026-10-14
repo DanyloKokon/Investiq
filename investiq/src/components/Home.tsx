@@ -10,20 +10,20 @@ function Home() {
     const navigate = useNavigate()
     const {type} = useParams()
     const storedUser = getUserFromStorage();
-    const [usBalance, setUsBalance] = useState<number>(storedUser.balance)
+    const [usBalance, setUsBalance] = useState<number>(0)
     const [activeTab, setActiveTab] = useState<'spends' | 'income'>('spends')
     const dispatch = useDispatch()
     console.log(type);
 
-    useEffect(() => {
-        dispatch(getUsBal({ id: storedUser.id }))
-    }, [dispatch, usBalance])
+    // useEffect(() => {
+    //     dispatch(getUsBal({ id: storedUser.id }))
+    // }, [dispatch, usBalance])
 
-    const handleSetbalance = (num: number) => {
-        if (usBalance) {
-            dispatch(postUserBalance({ balance: num, id: storedUser.id }))
-        }
-    }
+    // const handleSetbalance = (num: number) => {
+    //     if (usBalance) {
+    //         dispatch(postUserBalance({ balance: num, id: storedUser.id }))
+    //     }
+    // }
     return (
         <section className="home-sect">
             <div className="home-top-wrap">
