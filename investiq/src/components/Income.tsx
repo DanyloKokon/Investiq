@@ -7,7 +7,9 @@ import { getUserFromStorage } from "../utils/localStorage";
 import { supabase } from "../utils/supabase";
 function Income() {
     const { rows } = useSelector((state) => state.rows)
+    const { balance } = useSelector((state) => state.users)
     const storedUser = getUserFromStorage();
+    const userId = storedUser?.id;
     const [item, setItem] = useState<string>('')
     const [date, setDate] = useState<string>('')
     const [choise, setChoise] = useState<string>('')
@@ -35,10 +37,38 @@ function Income() {
 
 
 
-    const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) =>  {
+    const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (varr === 1) {
-            const {error} = await supabase.from('data').insert({date: date, description: item, categorie: choise, sum: sum, user_id: storedUser.id, type: 'income'})
+            const varr = Number(sum) + (Number(balance) || 0)
+            const { error } = await supabase.from('data').insert({ date: date, description: item, categorie: choise, sum: sum, user_id: storedUser.id, type: 'income' })
+            const { data: existingBalance, error: fetchError } = await supabase
+                .from("userBalance")
+                .select("user_id")
+                .eq("user_id", userId)
+                .maybeSingle()
+
+            if (fetchError) throw fetchError
+
+            const result = existingBalance
+                ? await supabase
+                    .from("userBalance")
+                    .update({ balance: varr })
+                    .eq("user_id", userId)
+                    .select("balance")
+                    .single()
+                : await supabase
+                    .from("userBalance")
+                    .insert({ user_id: userId, balance: varr })
+                    .select("balance")
+                    .single()
+
+            if (result.error) throw result.error
+
+            const savedBalance = Number(result.data.balance)
+            if (!Number.isFinite(savedBalance)) {
+                throw new Error("Сервер повернув некоректне значення балансу.")
+            }
             console.log("post");
             setSum(0)
             setDate('')
