@@ -111,7 +111,9 @@ const dataSlice = createSlice({
     error: null,
   },
   reducers: {
-
+    setRows(state, action){
+      state.rows = action.payload
+    }
   },
   extraReducers(builder) {
     builder
@@ -154,6 +156,7 @@ const dataSlice = createSlice({
 
 
 export const { setAuthUser } = accountSlice.actions;
+export const { setRows } = dataSlice.actions;
 
 export const rootReducer = combineReducers({
   users: accountSlice.reducer,

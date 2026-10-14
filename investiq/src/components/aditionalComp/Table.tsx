@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { trow } from "../map";
 import { useDispatch, useSelector } from "react-redux";
-import { getData, deleteRow } from "../../redux/reducer";
+import { getData, deleteRow, setRows } from "../../redux/reducer";
 import { IoTrashOutline } from "react-icons/io5";
 import { getUserFromStorage } from "../../utils/localStorage";
 import { store } from "../../redux/store";
@@ -40,20 +40,35 @@ function Table() {
     }));
 
     useEffect(() => {
-        if (id) {
-            console.log(type);
-            // dispatch(getData({ user_id: id, type: type }))
-            const { data, error } = supabase
-                .from('data')
-                .select()
-                .eq('user_id', storedUser.id)
-                .eq('type', type)
+        async function fetchRows() {
+         try {let query = supabase
+            .from('data')
+            .select()
+            .eq('user_id', storedUser.id)
+            .eq('type', type);
+
+            const {data, error} = await query
+            if(data){
+                dispatch(setRows(data))
+            }
         }
+        catch (error) {
+            console.error('Unexpected error');
+        }
+    }
+    fetchRows()
     }, [id, status, type])
 
+    
 
-    function handleDeleteRow(userId: string | number, rowId: string | number) {
-        dispatch(deleteRow({ user_id: userId, row_id: rowId }))
+    
+    
+
+    async function handleDeleteRow(rowId: string | number) {
+        const response = await supabase
+        .from('data')
+        .delete()
+        .eq('row_id', rowId)
     }
 
     return (
@@ -79,7 +94,7 @@ function Table() {
                                 <td>{r.sum || ' '}</td>
                                 <td>
                                     {rows.length > 0 ? (
-                                        <IoTrashOutline className="pointer" onClick={() => handleDeleteRow(id, r.row_id)} />
+                                        <IoTrashOutline className="pointer" onClick={() => handleDeleteRow(r.row_id)} />
                                     ) : (
                                         <span aria-hidden="true">&nbsp;</span>
                                     )}

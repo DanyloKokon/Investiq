@@ -67,6 +67,28 @@ body {
 .pointer:hover{
   cursor: pointer;
 }
+
+/* ======================================== Header ===================================== */
+.user-wrap{
+  display: flex;
+  gap: 3%;
+
+}
+
+.app-header{
+  display: flex;
+  
+}
+
+.user-out{
+  background: none;
+  color: var(--back-text);
+  border: none;
+}
+.user-out:hover{
+  cursor: pointer;
+}
+
 /* ======================================== Oath =================================== */
 .oath-wrap {
   display: flex;

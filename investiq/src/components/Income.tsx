@@ -4,6 +4,7 @@ import Table from "./aditionalComp/Table";
 import { useDispatch, useSelector } from "react-redux";
 import { postRow } from "../redux/reducer";
 import { getUserFromStorage } from "../utils/localStorage";
+import { supabase } from "../utils/supabase";
 function Income() {
     const { rows } = useSelector((state) => state.rows)
     const storedUser = getUserFromStorage();
@@ -34,15 +35,15 @@ function Income() {
 
 
 
-    function handelSubmit(e: React.FormEvent<HTMLFormElement>) {
+    const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) =>  {
         e.preventDefault()
         if (varr === 1) {
-            dispatch(postRow({ date: date, description: item, categorie: choise, sum: sum, user_id: storedUser.id, type: 'income' }))
+            const {error} = await supabase.from('data').insert({date: date, description: item, categorie: choise, sum: sum, user_id: storedUser.id, type: 'income'})
             console.log("post");
-            // setSum(0)
-            // setDate('')
-            // setChoise('')
-            // setItem('')
+            setSum(0)
+            setDate('')
+            setChoise('')
+            setItem('')
         } else if (varr === 2) {
             setSum(0)
             setDate('')
