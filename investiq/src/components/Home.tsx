@@ -2,7 +2,7 @@ import Costs from "./Costs";
 import Income from "./Income";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { getUserFromStorage } from "../utils/localStorage";
 import { setBalance } from "../redux/reducer";
 import { supabase } from "../utils/supabase";
@@ -133,7 +133,7 @@ function Home() {
                 >
                     {isSavingBalance ? "Збереження..." : "підтвердити"}
                 </button>
-                <button className="checkout">Перейти до розрахунків</button>
+                <Link to={'/Investiq/calculations'} className="checkout">Перейти до розрахунків</Link>
                 {balanceError && <p role="alert">{balanceError}</p>}
             </div>
             <div className="home-wrap">

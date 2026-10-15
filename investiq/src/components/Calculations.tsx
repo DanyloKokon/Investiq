@@ -1,21 +1,79 @@
+// import { IoFastFoodOutline, IoCarSportOutline, IoReceiptOutline  } from "react-icons/io5";
+// import { BiDrink } from "react-icons/bi";
+// import { GiKite, GiBookmarklet } from "react-icons/gi";
+// import { TbHealthRecognition } from "react-icons/tb";
+// import { LuSofa } from "react-icons/lu";
+// import { HiOutlineWrenchScrewdriver } from "react-icons/hi2";
+// import { MdSportsFootball } from "react-icons/md";
+
 import { Link } from "react-router";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 // import { useNavigate, useParams } from "react-router";
 import { getUserFromStorage } from "../utils/localStorage";
-import { setBalance } from "../redux/reducer";
+import { setBalance, setRows } from "../redux/reducer";
 import { supabase } from "../utils/supabase";
+import { action, getMonthList, getRowsForMonth, type MonthRow } from "./aditionalComp/AdditionalFunc";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { options as opt1, opt2 } from "./map";
+
+
+interface RowsState {
+    rows: {
+        rows: MonthRow[];
+    };
+}
 
 function Calculations() {
-    // const navigate = useNavigate()
-    // const { type } = useParams()
+     const { rows } = useSelector((state: RowsState) => state.rows)
+    
     const storedUser = getUserFromStorage();
     const userId = storedUser?.id;
-    const [usBalance, setUsBalance] = useState("0")
-    const [isLoadingBalance, setIsLoadingBalance] = useState(true)
-    const [isSavingBalance, setIsSavingBalance] = useState(false)
-    const [balanceError, setBalanceError] = useState("")
+    const [usBalance, setUsBalance] = useState<string>("0")
+    const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
+    const [isSavingBalance, setIsSavingBalance] = useState<boolean>(false)
+    const [balanceError, setBalanceError] = useState<string>("")
     const dispatch = useDispatch()
+    const [current, setCurrent] = useState<number>(0)
+    const [monthRow, setMonthRow] = useState<MonthRow[]>([])
+    const allMonth = useMemo(() => getMonthList(rows), [rows])
+    const [costsUse, setCostsUse] = useState<boolean>(true)
+    let options = costsUse ? opt1 : opt2
+
+
+    useEffect(() => {
+        async function fetchRows() {
+            try {
+                let query = supabase
+                    .from('data')
+                    .select()
+                    .eq('user_id', userId)
+                    
+
+                const { data, error } = await query
+                if (data) {
+                    dispatch(setRows(data))
+                }
+            }
+            catch (error) {
+                console.error('Unexpected error');
+            }
+        }
+        fetchRows()
+    }, [userId])
+
+
+    useEffect(() => {
+        if (!allMonth.length) {
+            setMonthRow([])
+            setCurrent(0)
+            return
+        }
+
+        const safeCurrent = Math.min(current, allMonth.length - 1)
+        const currentMonth = allMonth[safeCurrent]
+        setMonthRow(getRowsForMonth(currentMonth, rows))
+    }, [allMonth, current, rows])
 
     useEffect(() => {
         let isActive = true
@@ -114,8 +172,9 @@ function Calculations() {
         }
     }
 
-    return (<section>
-        <div>
+
+    return (<section className="calc-section">
+        <div className="home-top-wrap">
             <Link to={'/Investiq/home/costs'}> Повернутись на головну </Link>
             <p>Баланс:</p>
             <input
@@ -133,13 +192,40 @@ function Calculations() {
             >
                 {isSavingBalance ? "Збереження..." : "підтвердити"}
             </button>
+            <div className="calc-wrap-date">
+                <p className="calc-mini">Поточний періoд</p>
+                <div >
+                    <IoIosArrowBack className="calc-arrows" onClick={() => setCurrent(current > 0 ? current - 1 : 0)} />
+                    <p className="calc-date">{allMonth[current]}</p>
+                    <IoIosArrowForward className="calc-arrows" onClick={() => setCurrent(current + 1)} />
+                </div>
+            </div>
         </div>
-        <div>
+        <div className="calc-calc">
+            <p style={{ "color": 'red' }}>Витрати:-{action(monthRow, "-", null)}</p>
+            <p style={{"color":"#407946"}}>Доходи:{action(monthRow, "+", null)}</p>
+        </div>
+        <div className="calc-ul-wrap">
+            <div style={{"display": "flex", "alignItems": "center", "justifyContent": "center", "position": 'absolute', "top": '0'}}>
+                 <IoIosArrowBack className="calc-arrows" onClick={()=>setCostsUse(costsUse ? false : true)} />
+                    <p className="calc-date">{costsUse ? 'Витрати' : 'Дохід'}</p>
+                    <IoIosArrowForward className="calc-arrows" onClick={()=>setCostsUse(costsUse ? false : true)} />
+            </div>
+            <ul className="calc-ul">
+            {options.slice(1).map((op) => {
+                const Icon = op.pic;
 
+                return (
+                    <li key={op.value || "empty-category"}>
+                        <p>{action(monthRow, "+", op.value)}</p>
+                        {Icon ? <Icon className="calc-pic" /> : null}
+                        <p>{op.text}</p>
+                    </li>
+                );
+            })}
+        </ul>
         </div>
-        <div>
-
-        </div>
+        
     </section>);
 }
 

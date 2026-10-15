@@ -117,6 +117,7 @@ const dataSlice = createSlice({
   reducers: {
     setRows(state, action){
       state.rows = action.payload
+     
     }
   },
   extraReducers(builder) {

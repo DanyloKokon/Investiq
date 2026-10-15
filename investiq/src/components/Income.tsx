@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setRows } from "../redux/reducer";
 import { getUserFromStorage } from "../utils/localStorage";
 import { supabase } from "../utils/supabase";
+import { opt2 as options } from "./map";
 function Income() {
     const { rows } = useSelector((state) => state.rows)
     const { balance } = useSelector((state) => state.users)
@@ -17,22 +18,6 @@ function Income() {
     const [submitError, setSubmitError] = useState<string | null>(null)
 
     const dispatch = useDispatch()
-    const options = [
-        {
-            value: '',
-            text: 'Категорія товару'
-        },
-        {
-            value: 'salary',
-            text: 'ЗП'
-        },
-        {
-            value: 'extra-income',
-            text: 'Дод. прибуток'
-        }
-    ]
-
-
 
     function clearForm() {
         setSum(0)

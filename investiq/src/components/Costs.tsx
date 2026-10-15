@@ -5,6 +5,7 @@ import { setRows } from "../redux/reducer";
 import { getUserFromStorage } from "../utils/localStorage";
 import { months } from "./map";
 import { supabase } from "../utils/supabase";
+import { options } from "./map";
 function Costs() {
 
     const { rows } = useSelector((state) => state.rows)
@@ -18,56 +19,7 @@ function Costs() {
     const [submitError, setSubmitError] = useState<string | null>(null)
 
     const dispatch = useDispatch()
-    const options = [
-        {
-            value: '',
-            text: 'Категорія товару'
-        },
-        {
-            value: 'transport',
-            text: 'Транспорт'
-        },
-        {
-            value: 'products',
-            text: 'Продукти'
-        },
-        {
-            value: 'health',
-            text: 'Здоров’я'
-        },
-        {
-            value: 'alcohol',
-            text: 'Алкоголь'
-        },
-        {
-            value: 'entertainment',
-            text: 'Розваги'
-        },
-        {
-            value: 'all-for-home',
-            text: 'Все для дому'
-        },
-        {
-            value: 'electronic',
-            text: 'Техніка'
-        },
-        {
-            value: 'bills',
-            text: 'Комуналка, зв’язок'
-        },
-        {
-            value: 'sport-hobby',
-            text: 'Спорт, хобі'
-        },
-        {
-            value: 'education',
-            text: 'Навчання'
-        },
-        {
-            value: 'else',
-            text: 'Інше'
-        }
-    ]
+    
 
 
     function clearForm() {

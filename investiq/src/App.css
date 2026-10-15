@@ -8,7 +8,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   min-height: 100%;
   font-family: 'Roboto', sans-serif;
@@ -64,28 +65,29 @@ body {
   overflow-x: hidden;
 }
 
-.pointer:hover{
+.pointer:hover {
   cursor: pointer;
 }
 
 /* ======================================== Header ===================================== */
-.user-wrap{
+.user-wrap {
   display: flex;
   gap: 3%;
 
 }
 
-.app-header{
+.app-header {
   display: flex;
-  
+
 }
 
-.user-out{
+.user-out {
   background: none;
   color: var(--back-text);
   border: none;
 }
-.user-out:hover{
+
+.user-out:hover {
   cursor: pointer;
 }
 
@@ -234,15 +236,15 @@ body {
   background-color: var(--backW);
   color: var(--back-text);
   padding: 0 12px;
- 
+
 }
 
-.home-top-wrap{
-height: 44px;
-margin-bottom: 48px;
-display: flex;
-align-items: center;
-gap: 18px;
+.home-top-wrap {
+  height: 44px;
+  margin-bottom: 48px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
 
 .home-summ {
@@ -316,7 +318,7 @@ gap: 18px;
   color: var(--btnOr);
 }
 
-.home-btn-inp{
+.home-btn-inp {
   width: 125px;
   height: 44px;
   color: #000000;
@@ -328,11 +330,11 @@ gap: 18px;
   font-weight: 400;
 }
 
- .home-btn-inp-button:hover{
- cursor: pointer;
-} 
+.home-btn-inp-button:hover {
+  cursor: pointer;
+}
 
-.checkout{
+.checkout {
   width: 185px;
   height: 24px;
   font-size: 12px;
@@ -454,7 +456,7 @@ gap: 18px;
   border-radius: 16px 16px 0 0;
   font-weight: 700;
   font-size: 12px;
-  color:#000000 ;
+  color: #000000;
 }
 
 .monthly-summary-list {
@@ -478,4 +480,89 @@ gap: 18px;
 
 .monthly-summary-list p {
   margin: 0;
+}
+
+/* ======================================== Calc ========================== */
+.calc-calc {
+  display: flex;
+  width: 1060px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  background-color: var(--backW);
+  border-radius: 30px;
+}
+
+.calc-mini {
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.calc-date {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.calc-arrows {
+  color: var(--btnOr);
+}
+
+.calc-wrap-date div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calc-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.calc-ul {
+  list-style: none;
+  width: 613px;
+  height: 268pxpx;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  align-items: center;
+  /* gap: 5px; */
+}
+.calc-ul-wrap{
+   background-color: var(--backW);
+  border-radius: 30px;
+  width: 1060px;
+  height: 358px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+  flex-direction: column;
+  position: relative;
+}
+
+.calc-ul li:nth-child(-n+6) {
+  flex: 0 0 calc(100%/6);
+  box-sizing: border-box;
+  text-align: center;
+  padding: 5px;
+  
+}
+
+.calc-ul li:nth-child(n+7) {
+  flex: 0 0 calc(100%/5);
+  box-sizing: border-box;
+  text-align: center;
+  padding: 10px;
+}
+
+.calc-pic {
+  width: 56px;
+  height: 56px;
+}
+
+svg:hover {
+cursor: pointer;
 }
