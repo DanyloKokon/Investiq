@@ -2,7 +2,7 @@ import { months } from "./map";
 import { useState } from "react";
 import Table from "./aditionalComp/Table";
 import { useDispatch, useSelector } from "react-redux";
-import { postRow } from "../redux/reducer";
+import { setRows } from "../redux/reducer";
 import { getUserFromStorage } from "../utils/localStorage";
 import { supabase } from "../utils/supabase";
 function Income() {
@@ -14,7 +14,7 @@ function Income() {
     const [date, setDate] = useState<string>('')
     const [choise, setChoise] = useState<string>('')
     const [sum, setSum] = useState<number>(0)
-    const [varr, setVar] = useState<number>(0)
+    const [submitError, setSubmitError] = useState<string | null>(null)
 
     const dispatch = useDispatch()
     const options = [
@@ -34,14 +34,36 @@ function Income() {
 
 
 
+    function clearForm() {
+        setSum(0)
+        setDate('')
+        setChoise('')
+        setItem('')
+    }
 
 
-
-    const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
-        if (varr === 1) {
-            const varr = Number(sum) + (Number(balance) || 0)
-            const { error } = await supabase.from('data').insert({ date: date, description: item, categorie: choise, sum: sum, user_id: storedUser.id, type: 'income' })
+        setSubmitError(null)
+
+        if (!userId) {
+            setSubmitError("Не вдалося визначити користувача.")
+            return
+        }
+
+        try {
+            const var1 = (Number(balance) || 0) + Number(sum)
+            const { data: insertedRow, error: insertError } = await supabase
+                .from('data')
+                .insert({ date, description: item, categorie: choise, sum, user_id: userId, type: 'income' })
+                .select()
+                .single()
+
+            if (insertError) throw insertError
+            if (!insertedRow) throw new Error("Не вдалося отримати збережений запис.")
+
+            dispatch(setRows([...rows, insertedRow]))
+
             const { data: existingBalance, error: fetchError } = await supabase
                 .from("userBalance")
                 .select("user_id")
@@ -53,13 +75,13 @@ function Income() {
             const result = existingBalance
                 ? await supabase
                     .from("userBalance")
-                    .update({ balance: varr })
+                    .update({ balance: var1 })
                     .eq("user_id", userId)
                     .select("balance")
                     .single()
                 : await supabase
                     .from("userBalance")
-                    .insert({ user_id: userId, balance: varr })
+                    .insert({ user_id: userId, balance: var1 })
                     .select("balance")
                     .single()
 
@@ -69,16 +91,10 @@ function Income() {
             if (!Number.isFinite(savedBalance)) {
                 throw new Error("Сервер повернув некоректне значення балансу.")
             }
-            console.log("post");
-            setSum(0)
-            setDate('')
-            setChoise('')
-            setItem('')
-        } else if (varr === 2) {
-            setSum(0)
-            setDate('')
-            setChoise('')
-            setItem('')
+
+            clearForm()
+        } catch (error) {
+            setSubmitError(error instanceof Error ? error.message : "Не вдалося зберегти витрату.")
         }
     }
 
@@ -97,7 +113,7 @@ function Income() {
 
     return (<>
         <div className="home-main">
-            <form onSubmit={handelSubmit} className="home-form" >
+            <form onSubmit={handleSubmit} className="home-form" >
                 <input value={date} onChange={(e) => setDate(e.target.value)} type="date" className="home-date" name="date" />
                 <div className="home-input-wrap">
                     <input name="description" placeholder="Опис товару" value={item} onChange={(e) => setItem(e.target.value)} className="home-it" type="text" />
@@ -110,9 +126,10 @@ function Income() {
                     </select>
                     <input name="sum" onChange={(e) => setSum(e.target.value)} value={sum} className="home-summ" type="number" />
                 </div>
-                <button style={{ "marginLeft": "27px" }} onClick={() => setVar(1)} className="oath-btn oath-btn-or">Ввести</button>
-                <button onClick={() => setVar(2)} className="home-btn-cl">Очистити</button>
+                <button style={{ "marginLeft": "27px" }} className="oath-btn oath-btn-or">Ввести</button>
+                <button onClick={clearForm} className="home-btn-cl">Очистити</button>
             </form>
+            {submitError && <p role="alert">{submitError}</p>}
             <div className="table-wrap">
                 <Table type="income" />
                 {/* <table className="con-table">

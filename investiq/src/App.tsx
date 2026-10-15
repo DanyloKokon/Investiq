@@ -7,6 +7,7 @@ import './App.css'
 import Home from './components/Home'
 import { setAuthUser } from './redux/reducer'
 import { supabase } from './utils/supabase'
+import Calculations from './components/Calculations'
 
 function App() {
   const dispatch = useDispatch()
@@ -48,6 +49,7 @@ function App() {
         <Routes>
           <Route path="/Investiq/oath" element={<Enter />} />
           <Route path="/Investiq/home/:type" element={<Home />}/>
+          <Route path='/Investiq/calculations' element={<Calculations/>}/>
         </Routes>
       </BrowserRouter></div>
   )
