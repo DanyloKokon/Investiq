@@ -14,6 +14,7 @@ import { getUserFromStorage } from "../utils/localStorage";
 import { setBalance, setRows } from "../redux/reducer";
 import { supabase } from "../utils/supabase";
 import { action, getMonthList, getRowsForMonth, type MonthRow } from "./aditionalComp/AdditionalFunc";
+import Chart from "./aditionalComp/Chart";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { options as opt1, opt2 } from "./map";
 
@@ -36,6 +37,7 @@ function Calculations() {
     const dispatch = useDispatch()
     const [current, setCurrent] = useState<number>(0)
     const [monthRow, setMonthRow] = useState<MonthRow[]>([])
+    const [selectedCategory, setSelectedCategory] = useState<{ cat: string; name: string } | null>(null)
     const allMonth = useMemo(() => getMonthList(rows), [rows])
     const [costsUse, setCostsUse] = useState<boolean>(true)
     let options = costsUse ? opt1 : opt2
@@ -194,7 +196,7 @@ function Calculations() {
             </button>
             <div className="calc-wrap-date">
                 <p className="calc-mini">Поточний періoд</p>
-                <div >
+                <div className="calc-month-switcher">
                     <IoIosArrowBack className="calc-arrows" onClick={() => setCurrent(current > 0 ? current - 1 : 0)} />
                     <p className="calc-date">{allMonth[current]}</p>
                     <IoIosArrowForward className="calc-arrows" onClick={() => setCurrent(current + 1)} />
@@ -202,14 +204,20 @@ function Calculations() {
             </div>
         </div>
         <div className="calc-calc">
-            <p style={{ "color": 'red' }}>Витрати:-{action(monthRow, "-", null)}</p>
-            <p style={{"color":"#407946"}}>Доходи:{action(monthRow, "+", null)}</p>
+            <p className="calc-total calc-total-expenses">Витрати: -{action(monthRow, "-", null)}</p>
+            <p className="calc-total calc-total-income">Доходи: {action(monthRow, "+", null)}</p>
         </div>
         <div className="calc-ul-wrap">
-            <div style={{"display": "flex", "alignItems": "center", "justifyContent": "center", "position": 'absolute', "top": '0'}}>
-                 <IoIosArrowBack className="calc-arrows" onClick={()=>setCostsUse(costsUse ? false : true)} />
+            <div className="calc-category-heading">
+                 <IoIosArrowBack className="calc-arrows" onClick={() => {
+                    setCostsUse(costsUse ? false : true)
+                    setSelectedCategory(null)
+                 }} />
                     <p className="calc-date">{costsUse ? 'Витрати' : 'Дохід'}</p>
-                    <IoIosArrowForward className="calc-arrows" onClick={()=>setCostsUse(costsUse ? false : true)} />
+                    <IoIosArrowForward className="calc-arrows" onClick={() => {
+                        setCostsUse(costsUse ? false : true)
+                        setSelectedCategory(null)
+                    }} />
             </div>
             <ul className="calc-ul">
             {options.slice(1).map((op) => {
@@ -217,14 +225,40 @@ function Calculations() {
 
                 return (
                     <li key={op.value || "empty-category"}>
-                        <p>{action(monthRow, "+", op.value)}</p>
-                        {Icon ? <Icon className="calc-pic" /> : null}
-                        <p>{op.text}</p>
+                        <button
+                            type="button"
+                            className="calc-category-button"
+                            aria-pressed={selectedCategory?.cat === op.value}
+                            onClick={() => {
+                                setSelectedCategory({ cat: op.value, name: op.text })
+                            }}
+                        >
+                            <p>{action(monthRow, "+", op.value)}</p>
+                            {Icon ? <Icon className="calc-pic" /> : null}
+                            <p>{op.text}</p>
+                        </button>
                     </li>
                 );
             })}
         </ul>
         </div>
+        {costsUse && selectedCategory && (
+            <Chart
+                cat={selectedCategory.cat}
+                categoryName={selectedCategory.name}
+                rows={monthRow}
+                ifCosts={true}
+            />
+        )}
+
+        {costsUse === false && selectedCategory && (
+            <Chart
+                cat={selectedCategory.cat}
+                categoryName={selectedCategory.name}
+                rows={monthRow}
+                ifCosts={false}
+            />
+        )}
         
     </section>);
 }
