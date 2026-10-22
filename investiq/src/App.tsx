@@ -47,9 +47,9 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/Investiq/oath" element={<Enter />} />
-          <Route path="/Investiq/home/:type" element={<Home />}/>
-          <Route path='/Investiq/calculations' element={<Calculations/>}/>
+          <Route path="/oath" element={<Enter />} />
+          <Route path="/home/:type" element={<Home />}/>
+          <Route path='/calculations' element={<Calculations/>}/>
         </Routes>
       </BrowserRouter></div>
   )

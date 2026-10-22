@@ -8,6 +8,7 @@ import { supabase } from "../utils/supabase";
 function Enter() {
     const navigate = useNavigate()
     const { isLogined } = useSelector((state) => state.users)
+    const [erro, setError] = useState<string | null>(null)
     const [usEmail, setEmail] = useState<string>('')
     const [usPassword, setPass] = useState<string | number | null>('')
     const [choise, setChoise] = useState<number | null>(null)
@@ -15,7 +16,7 @@ function Enter() {
 
     useEffect(() => {
         if (isLogined) {
-            navigate('/Investiq/home')
+            navigate('/home/costs')
         }
     }, [isLogined, navigate])
 
@@ -40,7 +41,11 @@ function Enter() {
             setEmail('')
             setPass('')
             console.log(1);
-            navigate('/Investiq/home/costs')
+            if(error){
+                setError(error.message)
+            } else {
+                navigate('/home/costs')
+            }
         }
     }
 
@@ -59,6 +64,7 @@ function Enter() {
                 <input className="oath-inp" value={usEmail} onChange={(e) => setEmail(e.target.value)} placeholder="your@email.com" type="text" required />
                 <label className="oath-label">Пароль:</label>
                 <input className="oath-inp" value={usPassword} onChange={(e) => setPass(e.target.value)} type="password" placeholder="passoword" required name="" id="" />
+                {erro && <p style={{"color": 'red', "fontSize": '20px'}}>{erro}</p>}
                 <div style={{ "display": "flex", "gap": "15px" }}>
                     <button type="submit" onClick={() => setChoise(1)} className="oath-btn oath-btn-or" >Увійти</button>
                     <button type="submit" onClick={() => setChoise(2)} style={{ "backgroundColor": "#F5F6FB", "color": "#52555F" }} className="oath-btn">реєстрація</button>

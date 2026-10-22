@@ -133,20 +133,20 @@ function Home() {
                 >
                     {isSavingBalance ? "Збереження..." : "підтвердити"}
                 </button>
-                <Link to={'/Investiq/calculations'} className="checkout">Перейти до розрахунків</Link>
+                <Link to={'/calculations'} className="checkout">Перейти до розрахунків</Link>
                 {balanceError && <p role="alert">{balanceError}</p>}
             </div>
             <div className="home-wrap">
                 <div className="home-btns">
                     <button
                         className={`home-spends ${type === 'costs' ? 'active' : ''}`}
-                        onClick={() => navigate("/Investiq/home/costs", { replace: true })}
+                        onClick={() => navigate("/home/costs", { replace: true })}
                     >
                         Витрати
                     </button>
                     <button
                         className={`home-spends ${type === 'income' ? 'active' : ''}`}
-                        onClick={() => navigate("/Investiq/home/income", { replace: true })}
+                        onClick={() => navigate("/home/income", { replace: true })}
                     >
                         Дохід
                     </button>

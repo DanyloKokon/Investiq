@@ -32,6 +32,7 @@ function Calculations() {
     const userId = storedUser?.id;
     const [usBalance, setUsBalance] = useState<string>("0")
     const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
+    const [activeBg, setActBg] = useState<string | null>(null)
     const [isSavingBalance, setIsSavingBalance] = useState<boolean>(false)
     const [balanceError, setBalanceError] = useState<string>("")
     const dispatch = useDispatch()
@@ -177,7 +178,7 @@ function Calculations() {
 
     return (<section className="calc-section">
         <div className="home-top-wrap">
-            <Link to={'/Investiq/home/costs'}> Повернутись на головну </Link>
+            <Link to={'/home/costs'}> Повернутись на головну </Link>
             <p>Баланс:</p>
             <input
                 value={usBalance}
@@ -223,14 +224,17 @@ function Calculations() {
             {options.slice(1).map((op) => {
                 const Icon = op.pic;
 
+                const isBg = activeBg === op.value
+
                 return (
-                    <li key={op.value || "empty-category"}>
+                    <li   key={op.value || "empty-category"}>
                         <button
                             type="button"
                             className="calc-category-button"
                             aria-pressed={selectedCategory?.cat === op.value}
                             onClick={() => {
                                 setSelectedCategory({ cat: op.value, name: op.text })
+                                
                             }}
                         >
                             <p>{action(monthRow, "+", op.value)}</p>
