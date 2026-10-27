@@ -13,15 +13,25 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@heroui/react": "^3.2.6",
+    "@heroui/styles": "^3.2.6",
+    "@internationalized/date": "^3.12.4",
+    "@react-stately/utils": "^3.12.1",
     "@reduxjs/toolkit": "^2.13.0",
     "@supabase/supabase-js": "^2.117.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "@untitledui/icons": "^0.0.23",
     "chart.js": "^4.5.1",
     "react": "^19.2.8",
+    "react-aria": "^3.53.1",
+    "react-aria-components": "^1.22.1",
     "react-dom": "^19.2.8",
     "react-icons": "^5.7.0",
     "react-redux": "^9.3.0",
     "react-router": "^7.18.4",
-    "redux-toolkit": "^1.1.2"
+    "redux-toolkit": "^1.1.2",
+    "tailwind-merge": "^3.7.0",
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

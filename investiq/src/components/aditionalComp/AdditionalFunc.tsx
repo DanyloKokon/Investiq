@@ -40,14 +40,15 @@ export const action = (monthRow: MonthRow[], act: "+" | "-", cat: string | null)
             return sum + value;
         }
 
-        if (act === '+' && cat === row.categorie && rowType === "costs"){
-             return sum + value;
+        if (act === '+' && cat === row.categorie && rowType === "costs") {
+            return sum + value;
         }
 
-        if (act === '+' && cat === row.categorie && rowType === "income"){
-             return sum + value;
+        if (act === '+' && cat === row.categorie && rowType === "income") {
+            return sum + value;
         }
 
         return sum;
     }, 0);
 };
+
