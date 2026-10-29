@@ -8,15 +8,11 @@ import Home from './components/Home'
 import { setAuthUser } from './redux/reducer'
 import { supabase } from './utils/supabase'
 import Calculations from './components/Calculations'
-import { DatePicker } from './components/aditionalComp/application/date-picker/date-picker'
-import { getLocalTimeZone, today } from "@internationalized/date";
-import type { DateValue } from "react-aria-components";
+
 
 
 
 function App() {
-  const now = today(getLocalTimeZone());
-  const [value, setValue] = useState<DateValue | null>(now);
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -57,7 +53,7 @@ function App() {
           <Route path="/oath" element={<Enter />} />
           <Route path="/home/:type" element={<Home />} />
           <Route path='/calculations' element={<Calculations />} />
-          <Route path='/test' element={<DatePicker aria-label="Date picker" value={value} onChange={setValue} />} />
+         
         </Routes>
       </BrowserRouter></div>
   )

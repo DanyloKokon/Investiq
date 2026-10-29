@@ -16,6 +16,7 @@ function Header() {
                 <p>Investiq</p>
             </div>
             {user && <div className="user-wrap">
+                <p className="user-pfp">U</p>
                 <p className="user-name">User Name</p>
                 <button className="user-out" onClick={handleOut}>Вийти</button>
             </div>}

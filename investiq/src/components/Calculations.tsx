@@ -1,11 +1,3 @@
-// import { IoFastFoodOutline, IoCarSportOutline, IoReceiptOutline  } from "react-icons/io5";
-// import { BiDrink } from "react-icons/bi";
-// import { GiKite, GiBookmarklet } from "react-icons/gi";
-// import { TbHealthRecognition } from "react-icons/tb";
-// import { LuSofa } from "react-icons/lu";
-// import { HiOutlineWrenchScrewdriver } from "react-icons/hi2";
-// import { MdSportsFootball } from "react-icons/md";
-
 import { Link } from "react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";

@@ -4,9 +4,6 @@
   font-style: normal;
 }
 
-@import "tailwindcss";
-@import "@heroui/styles";
-
 * {
   box-sizing: border-box;
 }
@@ -109,6 +106,16 @@ html {
 .user-name {
   text-align: center;
 
+}
+
+.user-pfp{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  background-color: var(--back-text);
+  border-radius: 50%;
 }
 
 /* ======================================== Oath =================================== */

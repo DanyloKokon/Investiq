@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { trow } from "../map";
 import { useDispatch, useSelector } from "react-redux";
-import { getData, deleteRow, setRows } from "../../redux/reducer";
+import { setRows } from "../../redux/reducer";
 import { IoTrashOutline } from "react-icons/io5";
 import { getUserFromStorage } from "../../utils/localStorage";
 import { store } from "../../redux/store";

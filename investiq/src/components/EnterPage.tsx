@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { postUser, getUser } from "../redux/reducer";
+//import { postUser, getUser } from "../redux/reducer";
 import { nanoid } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router";
 import { supabase } from "../utils/supabase";
