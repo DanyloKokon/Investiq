@@ -94,7 +94,7 @@ function Table() {
                                 <td>{r.sum || ' '}</td>
                                 <td>
                                     {rows.length > 0 ? (
-                                        <IoTrashOutline className="pointer" onClick={() => handleDeleteRow(r.row_id)} />
+                                        <IoTrashOutline className="pointer hoverP" onClick={() => handleDeleteRow(r.row_id)} />
                                     ) : (
                                         <span aria-hidden="true">&nbsp;</span>
                                     )}
