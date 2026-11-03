@@ -1095,7 +1095,7 @@ svg:hover {
   }
 }
 
-@media (max-width: 425px) and (min-width: 320px) {
+@media (max-width: 425px) {
   .home-top-wrap>.home-btn-inp-button {
     display: none;
   }
