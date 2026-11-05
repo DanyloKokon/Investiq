@@ -6,7 +6,9 @@ import { setRows } from "../redux/reducer";
 import { getUserFromStorage } from "../utils/localStorage";
 import { supabase } from "../utils/supabase";
 import { opt2 as options } from "./map";
+
 function Income() {
+
     const { rows } = useSelector((state) => state.rows)
     const { balance } = useSelector((state) => state.users)
     const storedUser = getUserFromStorage();
@@ -177,33 +179,8 @@ function Income() {
                 </form>
                 </div>
             <div className="table-wrap">
-                <Table type="income" />
-                {/* <table className="con-table">
-                        <thead className="con-thead">
-                            <tr className="con-tr">
-                                <th className="con-th">
-                                    зведення
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="con-body">
-                            <ul role="listbox">
-                                {monthlyTotals.map((month) => (
-                                <li>
-                                    <tr className="con-b-tr" key={month.month}>
-                                    <td className="con-td">
-                                        <p>{month.month}</p>
-                                        <p>{month.total.toFixed(2)}</p>
-                                    </td>
-
-                                </tr>
-                                </li>
-                            ))}
-                            </ul>
-
-
-                        </tbody>
-                    </table> */}
+                <Table/>
+                
                 <div className="monthly-summary">
                     <h2>зведення</h2>
                     <ul className="monthly-summary-list">

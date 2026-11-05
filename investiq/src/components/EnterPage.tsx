@@ -1,40 +1,48 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState, type FormEvent, type JSX } from "react";
+import { useSelector } from "react-redux";
 //import { postUser, getUser } from "../redux/reducer";
 import { nanoid } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router";
-import { supabase } from "../utils/supabase";
+import { supabase } from "@/utils/supabase";
 
-function Enter() {
+
+interface EnterState {
+    users: {
+        isLogined: boolean;
+    };
+}
+
+function Enter(): JSX.Element {
     const navigate = useNavigate()
-    const { isLogined } = useSelector((state) => state.users)
+    const { isLogined } = useSelector((state: EnterState) => state.users)
     const [erro, setError] = useState<string | null>(null)
     const [usEmail, setEmail] = useState<string>('')
-    const [usPassword, setPass] = useState<string | number | null>('')
-    const [choise, setChoise] = useState<number | null>(null)
-    const dispatch = useDispatch()
-
+    const [usPassword, setPass] = useState<string>('')
+    const [choise, setChoise] = useState<1 | 2 | null>(null)
     useEffect(() => {
         if (isLogined) {
             navigate('/home/costs')
         }
     }, [isLogined, navigate])
 
-     const handleSubmit = async (e) => {
+     const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
         const id = nanoid(10)
 
         e.preventDefault()
         if (choise === 2) {
             // dispatch(postUser({ username: 'User', password: password, email: email }));
-            const { data, error } = await supabase.auth.signUp({
+            const { error } = await supabase.auth.signUp({
                 email: usEmail,
                 password: usPassword
             })
             setEmail('')
             setPass('')
             console.log(String(id));
+            if (error) {
+                setError(error.message)
+            }
         } else if (choise === 1) {
-            const { data, error } = await supabase.auth.signInWithPassword({
+            const { error } = await supabase.auth.signInWithPassword({
                 email: usEmail,
                 password: usPassword
             })
