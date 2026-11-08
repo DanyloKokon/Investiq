@@ -1417,3 +1417,182 @@ svg:hover {
     justify-content: flex-start;
   }
 }
+
+/* Motion */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.oath-wrap > div:first-child {
+  animation: rise-in 500ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.oath-form {
+  animation: pop-in 450ms cubic-bezier(0.2, 0.7, 0.2, 1) 80ms both;
+}
+
+.home-top-wrap,
+.home-wrap,
+.calc-section > .home-top-wrap,
+.calc-calc,
+.calc-ul-wrap,
+.category-chart {
+  animation: rise-in 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.home-wrap {
+  animation-delay: 60ms;
+}
+
+.calc-calc {
+  animation-delay: 50ms;
+}
+
+.calc-ul-wrap {
+  animation-delay: 100ms;
+}
+
+.category-chart {
+  animation: pop-in 240ms ease-out both;
+}
+
+.table-tr {
+  animation: rise-in 260ms ease-out both;
+}
+
+.table-body .table-tr:nth-child(2) {
+  animation-delay: 25ms;
+}
+
+.table-body .table-tr:nth-child(3) {
+  animation-delay: 50ms;
+}
+
+.table-body .table-tr:nth-child(4) {
+  animation-delay: 75ms;
+}
+
+.table-body .table-tr:nth-child(5) {
+  animation-delay: 100ms;
+}
+
+.table-body .table-tr:nth-child(n + 6) {
+  animation-delay: 125ms;
+}
+
+.monthly-summary-list li {
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.monthly-summary-list li:hover {
+  background-color: #fff0e6;
+}
+
+.home-spends,
+.home-btn-inp-button,
+.home-btn-cl,
+.mobile-form-trigger,
+.oath-btn,
+.checkout,
+.user-out,
+.calc-arrows,
+.calc-category-button,
+.pointer {
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease,
+    opacity 160ms ease;
+}
+
+.home-spends:hover,
+.home-btn-inp-button:hover,
+.home-btn-cl:hover,
+.mobile-form-trigger:hover,
+.oath-btn:hover {
+  transform: translateY(-2px);
+}
+
+.home-spends:active,
+.home-btn-inp-button:active,
+.home-btn-cl:active,
+.mobile-form-trigger:active,
+.oath-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.home-it,
+.home-select,
+.home-summ,
+.home-date,
+.home-btn-inp,
+.oath-inp {
+  transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.home-it:focus,
+.home-select:focus,
+.home-summ:focus,
+.home-date:focus,
+.home-btn-inp:focus,
+.oath-inp:focus {
+  border-color: var(--btnOr);
+  box-shadow: 0 0 0 3px rgb(255 117 29 / 14%);
+}
+
+.transaction-form-overlay.is-open {
+  animation: overlay-in 180ms ease-out both;
+}
+
+.transaction-form-overlay.is-open .home-form {
+  animation: pop-in 220ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.calc-category-button:active,
+.calc-arrows:active,
+.pointer:active {
+  transform: scale(0.94);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
