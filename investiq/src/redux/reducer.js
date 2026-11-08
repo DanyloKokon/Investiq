@@ -51,6 +51,12 @@ const dataSlice = createSlice({
     setRows(state, action){
       state.rows = action.payload
      
+    },
+    addRow(state, action) {
+      state.rows.push(action.payload)
+    },
+    removeRow(state, action) {
+      state.rows = state.rows.filter((row) => row.row_id !== action.payload)
     }
   },
 
@@ -58,7 +64,7 @@ const dataSlice = createSlice({
 
 
 export const { setAuthUser, setBalance } = accountSlice.actions;
-export const { setRows } = dataSlice.actions;
+export const { setRows, addRow, removeRow } = dataSlice.actions;
 
 export const rootReducer = combineReducers({
   users: accountSlice.reducer,

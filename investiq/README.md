@@ -1,5 +1,9 @@
 # React + TypeScript + Vite
 
+## Supabase database changes
+
+Run the SQL migration in `supabase/migrations` in the Supabase SQL Editor before deploying the app. Transaction creation and deletion use database functions from that migration so the transaction row and balance update commit or roll back together.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

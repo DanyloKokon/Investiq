@@ -14,6 +14,7 @@ function Home() {
     const storedUser = getUserFromStorage();
     const userId = storedUser?.id;
     const [usBalance, setUsBalance] = useState("0")
+    const [isBalanceEdited, setIsBalanceEdited] = useState(false)
     const [isLoadingBalance, setIsLoadingBalance] = useState(true)
     const [isSavingBalance, setIsSavingBalance] = useState(false)
     const [balanceError, setBalanceError] = useState("")
@@ -62,12 +63,6 @@ function Home() {
       }
     }, [dispatch, userId])
 
-    useEffect(()=>{
-        if(balance){
-            setBalance(String(balance))
-        }
-    },[balance])
-
     async function handleSetBalance() {
         if (!userId) {
             setBalanceError("Не вдалося зберегти баланс: користувача не знайдено.")
@@ -113,6 +108,7 @@ function Home() {
             }
 
             setUsBalance(String(savedBalance))
+            setIsBalanceEdited(false)
             dispatch(setBalance(savedBalance))
         } catch (error) {
             console.error("Не вдалося зберегти баланс:", error)
@@ -126,8 +122,11 @@ function Home() {
             <div className="home-top-wrap">
                 <p>Баланс:</p>
                 <input
-                    value={usBalance}
-                    onChange={(e) => setUsBalance(e.target.value)}
+                    value={isBalanceEdited ? usBalance : String(balance)}
+                    onChange={(e) => {
+                        setUsBalance(e.target.value)
+                        setIsBalanceEdited(true)
+                    }}
                     type="number"
                     step="any"
                     className="home-btn-inp"

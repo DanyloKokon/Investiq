@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { trow } from "../map";
 import { useDispatch, useSelector } from "react-redux";
-import { setRows } from "../../redux/reducer";
+import { removeRow, setBalance, setRows } from "../../redux/reducer";
 import { IoTrashOutline } from "react-icons/io5";
 import { getUserFromStorage } from "../../utils/localStorage";
 import { store } from "../../redux/store";
@@ -31,6 +31,7 @@ function Table() {
     const { type } = useParams()
     const storedUser = getUserFromStorage();
     const id = storedUser?.id
+    const [deleteError, setDeleteError] = useState<string | null>(null)
     const visibleRows = rows.length > 0 ? rows : Array.from({ length: 9 }, (_, index) => ({
         row_id: `placeholder-${index}`,
         date: '',
@@ -41,39 +42,52 @@ function Table() {
 
     useEffect(() => {
         async function fetchRows() {
-         try {let query = supabase
-            .from('data')
-            .select()
-            .eq('user_id', storedUser.id)
-            .eq('type', type);
+            if (!id) return
 
-            const {data, error} = await query
-            if(data){
-                dispatch(setRows(data))
+            try {
+                const { data, error } = await supabase
+                    .from('data')
+                    .select()
+                    .eq('user_id', id)
+                    .eq('type', type)
+
+                if (error) throw error
+                dispatch(setRows(data ?? []))
+            } catch (error) {
+                console.error('Failed to load transactions:', error)
             }
         }
-        catch (error) {
-            console.error('Unexpected error');
-        }
-    }
-    fetchRows()
-    }, [id, status, type])
-
-    
-
-    
-    
+        fetchRows()
+    }, [dispatch, id, status, type])
 
     async function handleDeleteRow(rowId: string | number) {
-        const response = await supabase
-        .from('data')
-        .delete()
-        .eq('row_id', rowId)
+        setDeleteError(null)
+
+        try {
+            const { data, error } = await supabase.rpc("delete_financial_transaction", {
+                p_row_id: String(rowId),
+            })
+
+            if (error) throw error
+            if (!data?.row) throw new Error("Не вдалося отримати видалений запис.")
+
+            const savedBalance = Number(data.balance)
+            if (!Number.isFinite(savedBalance)) {
+                throw new Error("Сервер повернув некоректне значення балансу.")
+            }
+
+            dispatch(removeRow(rowId))
+            dispatch(setBalance(savedBalance))
+        } catch (error) {
+            console.error("Failed to delete transaction:", error)
+            setDeleteError(error instanceof Error ? error.message : "Не вдалося видалити запис.")
+        }
     }
 
     return (
         <>
             {error && <p role="alert">{error}</p>}
+            {deleteError && <p role="alert">{deleteError}</p>}
             <div className="table-scroll">
                 <table className="table">
                     <thead>
