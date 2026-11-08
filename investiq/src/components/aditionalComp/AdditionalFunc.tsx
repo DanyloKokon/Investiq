@@ -59,7 +59,7 @@ export const getRowsForMonth = (currentMonth: string, rows: MonthRow[]): MonthRo
 };
 
 export const action = (monthRow: MonthRow[], act: "+" | "-", cat: string | null): number => {
-    return monthRow.reduce((sum, row) => {
+    const total = monthRow.reduce((sum, row) => {
         const value = Number(row.sum ?? 0);
 
         if (!Number.isFinite(value) || value <= 0) {
@@ -86,4 +86,6 @@ export const action = (monthRow: MonthRow[], act: "+" | "-", cat: string | null)
 
         return sum;
     }, 0);
+
+    return Number(total.toFixed(2));
 };
