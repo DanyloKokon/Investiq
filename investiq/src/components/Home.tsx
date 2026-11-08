@@ -1,13 +1,14 @@
 import Costs from "./Costs";
 import Income from "./Income";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
 import { getUserFromStorage } from "../utils/localStorage";
 import { setBalance } from "../redux/reducer";
 import { supabase } from "../utils/supabase";
 
 function Home() {
+    const { balance } = useSelector((state) => state.users)
     const navigate = useNavigate()
     const { type } = useParams()
     const storedUser = getUserFromStorage();
@@ -60,6 +61,12 @@ function Home() {
         isActive = false
       }
     }, [dispatch, userId])
+
+    useEffect(()=>{
+        if(balance){
+            setBalance(String(balance))
+        }
+    },[balance])
 
     async function handleSetBalance() {
         if (!userId) {

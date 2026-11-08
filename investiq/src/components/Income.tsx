@@ -6,6 +6,7 @@ import { setRows } from "../redux/reducer";
 import { getUserFromStorage } from "../utils/localStorage";
 import { supabase } from "../utils/supabase";
 import { opt2 as options } from "./map";
+import { setBalance } from "../redux/reducer";
 
 function Income() {
 
@@ -111,10 +112,13 @@ function Income() {
                     .single()
 
             if (result.error) throw result.error
+            
 
             const savedBalance = Number(result.data.balance)
             if (!Number.isFinite(savedBalance)) {
                 throw new Error("Сервер повернув некоректне значення балансу.")
+            } else {
+                dispatch(setBalance(savedBalance))
             }
 
             clearForm()
@@ -136,6 +140,7 @@ function Income() {
 
         return { ...month, total };
     });
+
 
     return (<>
         <div className="home-main">

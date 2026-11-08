@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 //import { postUser, getUser } from "../redux/reducer";
 import { nanoid } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router";
-import { supabase } from "@/utils/supabase";
+import { supabase } from "@/utils/supabase"
 
 
 interface EnterState {
@@ -79,6 +79,7 @@ function Enter(): JSX.Element {
                 </div>
             </form>
         </div>
+        <a href="../utils/app-release.apk" download>Install App</a>
     </div>);
 }
 

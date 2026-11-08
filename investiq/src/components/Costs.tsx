@@ -6,6 +6,7 @@ import { getUserFromStorage } from "../utils/localStorage";
 import { months } from "./map";
 import { supabase } from "../utils/supabase";
 import { options } from "./map";
+import { setBalance } from "../redux/reducer";
 
 function Costs() {
 
@@ -58,7 +59,7 @@ function Costs() {
             trigger?.focus()
         }
     }, [isFormOpen])
-    
+
 
 
     function clearForm() {
@@ -97,7 +98,7 @@ function Costs() {
                 .maybeSingle()
 
             if (fetchError) throw fetchError
-            
+
             const result = existingBalance
                 ? await supabase
                     .from("userBalance")
@@ -116,6 +117,8 @@ function Costs() {
             const savedBalance = Number(result.data.balance)
             if (!Number.isFinite(savedBalance)) {
                 throw new Error("Сервер повернув некоректне значення балансу.")
+            } else {
+                dispatch(setBalance(savedBalance))
             }
 
             clearForm()
@@ -124,7 +127,7 @@ function Costs() {
             setSubmitError(error instanceof Error ? error.message : "Не вдалося зберегти витрату.")
         }
     }
-    
+
 
     const monthlyTotals = months.map((month, index) => {
         const monthNumber = String(index + 1).padStart(2, '0');
@@ -185,10 +188,10 @@ function Costs() {
                     <button type="button" onClick={clearForm} className="home-btn-cl">Очистити</button>
                     {submitError && <p className="transaction-form-error" role="alert">{submitError}</p>}
                 </form>
-                </div>
+            </div>
             <div className="table-wrap">
                 <Table type="costs" />
-                
+
                 <div className="monthly-summary">
                     <h2>зведення</h2>
                     <ul className="monthly-summary-list">
