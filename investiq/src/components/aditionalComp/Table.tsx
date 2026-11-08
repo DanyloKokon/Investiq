@@ -41,8 +41,13 @@ function Table() {
     }));
 
     useEffect(() => {
+        let isActive = true
+        dispatch(setRows([]))
+
         async function fetchRows() {
-            if (!id) return
+            if (!id) {
+                return
+            }
 
             try {
                 const { data, error } = await supabase
@@ -52,12 +57,16 @@ function Table() {
                     .eq('type', type)
 
                 if (error) throw error
-                dispatch(setRows(data ?? []))
+                if (isActive) dispatch(setRows(data ?? []))
             } catch (error) {
                 console.error('Failed to load transactions:', error)
             }
         }
         fetchRows()
+
+        return () => {
+            isActive = false
+        }
     }, [dispatch, id, status, type])
 
     async function handleDeleteRow(rowId: string | number) {

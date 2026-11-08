@@ -7,6 +7,7 @@ create or replace function public.add_financial_transaction(
 )
 returns jsonb
 language plpgsql
+security definer
 set search_path = ''
 as $$
 declare
@@ -75,6 +76,7 @@ $$;
 create or replace function public.delete_financial_transaction(p_row_id text)
 returns jsonb
 language plpgsql
+security definer
 set search_path = ''
 as $$
 declare
